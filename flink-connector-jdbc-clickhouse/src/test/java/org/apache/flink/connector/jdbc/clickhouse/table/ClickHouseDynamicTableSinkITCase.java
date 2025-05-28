@@ -28,6 +28,11 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.apache.flink.connector.jdbc.clickhouse.table.ClickHouseTableBuilder.clickHouseTableRow;
+import static org.apache.flink.connector.jdbc.clickhouse.table.ClickHouseTableBuilder.dbType;
+import static org.apache.flink.connector.jdbc.clickhouse.table.ClickHouseTableBuilder.field;
+import static org.apache.flink.connector.jdbc.clickhouse.table.ClickHouseTableBuilder.pkField;
+
 /** The Table Sink ITCase for {@link ClickHouseDialect}. */
 class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
         implements ClickHouseTestBase {
