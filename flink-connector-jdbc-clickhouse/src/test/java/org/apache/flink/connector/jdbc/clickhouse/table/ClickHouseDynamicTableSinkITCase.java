@@ -24,11 +24,11 @@ import org.apache.flink.connector.jdbc.core.table.sink.JdbcDynamicTableSinkITCas
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.types.Row;
 
+import org.junit.jupiter.api.Disabled;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-
-import org.junit.jupiter.api.Disabled;
 
 import static org.apache.flink.connector.jdbc.clickhouse.table.ClickHouseTableBuilder.clickHouseTableRow;
 import static org.apache.flink.connector.jdbc.clickhouse.table.ClickHouseTableBuilder.dbType;
