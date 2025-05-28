@@ -32,38 +32,38 @@ import java.util.List;
 class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
         implements ClickHouseTestBase {
 
+    // ClickHouse does not support upsert statements
+    @Override
+    protected ClickHouseTableRow createUpsertOutputTable() {
+        return clickHouseTableRow(
+                "dynamicSinkForUpsert",
+                pkField("cnt", DataTypes.BIGINT().notNull()),
+                field("lencnt", DataTypes.BIGINT().notNull()),
+                pkField("cTag", DataTypes.INT().notNull()),
+                field("ts", dbType("TIMESTAMP"), DataTypes.TIMESTAMP()));
+    }
+
     @Override
     protected ClickHouseTableRow createAppendOutputTable() {
-        return ClickHouseTableBuilder.clickHouseTableRow(
+        return clickHouseTableRow(
                 "dynamicSinkForAppend",
-                ClickHouseTableBuilder.pkField("id", DataTypes.INT().notNull()),
-                ClickHouseTableBuilder.field(
-                        "num",
-                        ClickHouseTableBuilder.dbType("Int64"),
-                        DataTypes.BIGINT().notNull()),
-                ClickHouseTableBuilder.field(
-                        "ts",
-                        ClickHouseTableBuilder.dbType("DateTime64(6)"),
-                        DataTypes.TIMESTAMP()));
+                pkField("id", DataTypes.INT().notNull()),
+                field("num", dbType("Int64"), DataTypes.BIGINT().notNull()),
+                field("ts", ClickHouseTableBuilder.dbType("DateTime64(6)"), DataTypes.TIMESTAMP()));
     }
 
     @Override
     protected ClickHouseTableRow createBatchOutputTable() {
-        return ClickHouseTableBuilder.clickHouseTableRow(
+        return clickHouseTableRow(
                 "dynamicSinkForBatch",
-                ClickHouseTableBuilder.pkField("NAME", DataTypes.VARCHAR(20).notNull()),
-                ClickHouseTableBuilder.field(
-                        "SCORE",
-                        ClickHouseTableBuilder.dbType("Int64"),
-                        DataTypes.BIGINT().notNull()));
+                pkField("NAME", DataTypes.VARCHAR(20).notNull()),
+                field("SCORE", dbType("Int64"), DataTypes.BIGINT().notNull()));
     }
 
     @Override
     protected ClickHouseTableRow createRealOutputTable() {
-        return ClickHouseTableBuilder.clickHouseTableRow(
-                "REAL_TABLE",
-                ClickHouseTableBuilder.pkField(
-                        "real_data", ClickHouseTableBuilder.dbType("Float32"), DataTypes.FLOAT()));
+        return clickHouseTableRow(
+                "REAL_TABLE", pkField("real_data", dbType("Float32"), DataTypes.FLOAT()));
     }
 
     @Override
