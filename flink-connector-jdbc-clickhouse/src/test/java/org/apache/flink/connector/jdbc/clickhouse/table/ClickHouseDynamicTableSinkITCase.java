@@ -41,7 +41,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
     @Override
     protected ClickHouseTableRow createUpsertOutputTable() {
         return clickHouseTableRow(
-                "dynamicSinkForUpsert",
+                "dynamSinkForUpsert",
                 pkField("cnt", DataTypes.BIGINT().notNull()),
                 field("lencnt", DataTypes.BIGINT().notNull()),
                 pkField("cTag", DataTypes.INT().notNull()),
