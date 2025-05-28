@@ -21,10 +21,10 @@ package org.apache.flink.connector.jdbc.clickhouse.table;
 import org.apache.flink.connector.jdbc.testutils.tables.TableField;
 import org.apache.flink.table.types.DataType;
 
-/** Table builder. * */
+/** ClickHouse Table builder. * */
 public final class ClickHouseTableBuilder {
 
-    public static ClickHouseTableRow ClickHouseTableRow(String name, TableField... fields) {
+    public static ClickHouseTableRow clickHouseTableRow(String name, TableField... fields) {
         return new ClickHouseTableRow(name, fields);
     }
 

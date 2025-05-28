@@ -21,8 +21,6 @@ package org.apache.flink.connector.jdbc.clickhouse.table;
 import org.apache.flink.connector.jdbc.clickhouse.ClickHouseTestBase;
 import org.apache.flink.connector.jdbc.clickhouse.database.dialect.ClickHouseDialect;
 import org.apache.flink.connector.jdbc.core.table.source.JdbcDynamicTableSourceITCase;
-import org.apache.flink.connector.jdbc.testutils.tables.TableBuilder;
-import org.apache.flink.connector.jdbc.testutils.tables.TableRow;
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.types.Row;
 
@@ -37,36 +35,50 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
         implements ClickHouseTestBase {
 
     @Override
-    protected TableRow createInputTable() {
-        return ClickHouseTableBuilder.ClickHouseTableRow(
+    protected ClickHouseTableRow createInputTable() {
+        return ClickHouseTableBuilder.clickHouseTableRow(
                 "jdbDynamicTableSource",
-                TableBuilder.pkField(
-                        "id", TableBuilder.dbType("Int64"), DataTypes.BIGINT().notNull()),
-                TableBuilder.field(
+                ClickHouseTableBuilder.pkField(
+                        "id", ClickHouseTableBuilder.dbType("Int64"), DataTypes.BIGINT().notNull()),
+                ClickHouseTableBuilder.field(
                         "decimal_col",
-                        TableBuilder.dbType("Decimal(10,4)"),
+                        ClickHouseTableBuilder.dbType("Decimal(10,4)"),
                         DataTypes.DECIMAL(10, 4)),
-                TableBuilder.field(
+                ClickHouseTableBuilder.field(
                         "timestamp6_col",
-                        TableBuilder.dbType("DateTime64(6)"),
+                        ClickHouseTableBuilder.dbType("DateTime64(6)"),
                         DataTypes.TIMESTAMP(6)),
                 // other fields
-                TableBuilder.field("float_col", TableBuilder.dbType("Float32"), DataTypes.FLOAT()),
-                TableBuilder.field(
-                        "double_col", TableBuilder.dbType("Float64"), DataTypes.DOUBLE()),
-                TableBuilder.field(
-                        "binary_float_col", TableBuilder.dbType("Float32"), DataTypes.FLOAT()),
-                TableBuilder.field(
-                        "binary_double_col", TableBuilder.dbType("Float64"), DataTypes.DOUBLE()),
-                TableBuilder.field("char_col", TableBuilder.dbType("String"), DataTypes.CHAR(1)),
-                TableBuilder.field(
-                        "string_col", TableBuilder.dbType("String"), DataTypes.VARCHAR(3)),
-                TableBuilder.field(
-                        "string2_col", TableBuilder.dbType("String"), DataTypes.VARCHAR(30)),
-                TableBuilder.field("date_col", TableBuilder.dbType("Date"), DataTypes.DATE()),
-                TableBuilder.field(
-                        "dt9_col", TableBuilder.dbType("DateTime64(9)"), DataTypes.TIMESTAMP(9)),
-                TableBuilder.field("clob_col", TableBuilder.dbType("String"), DataTypes.STRING()));
+                ClickHouseTableBuilder.field(
+                        "float_col", ClickHouseTableBuilder.dbType("Float32"), DataTypes.FLOAT()),
+                ClickHouseTableBuilder.field(
+                        "double_col", ClickHouseTableBuilder.dbType("Float64"), DataTypes.DOUBLE()),
+                ClickHouseTableBuilder.field(
+                        "binary_float_col",
+                        ClickHouseTableBuilder.dbType("Float32"),
+                        DataTypes.FLOAT()),
+                ClickHouseTableBuilder.field(
+                        "binary_double_col",
+                        ClickHouseTableBuilder.dbType("Float64"),
+                        DataTypes.DOUBLE()),
+                ClickHouseTableBuilder.field(
+                        "char_col", ClickHouseTableBuilder.dbType("String"), DataTypes.CHAR(1)),
+                ClickHouseTableBuilder.field(
+                        "string_col",
+                        ClickHouseTableBuilder.dbType("String"),
+                        DataTypes.VARCHAR(3)),
+                ClickHouseTableBuilder.field(
+                        "string2_col",
+                        ClickHouseTableBuilder.dbType("String"),
+                        DataTypes.VARCHAR(30)),
+                ClickHouseTableBuilder.field(
+                        "date_col", ClickHouseTableBuilder.dbType("Date"), DataTypes.DATE()),
+                ClickHouseTableBuilder.field(
+                        "dt9_col",
+                        ClickHouseTableBuilder.dbType("DateTime64(9)"),
+                        DataTypes.TIMESTAMP(9)),
+                ClickHouseTableBuilder.field(
+                        "clob_col", ClickHouseTableBuilder.dbType("String"), DataTypes.STRING()));
     }
 
     @Override

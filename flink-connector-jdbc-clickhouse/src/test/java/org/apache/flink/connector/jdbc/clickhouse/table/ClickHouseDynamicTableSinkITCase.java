@@ -21,48 +21,49 @@ package org.apache.flink.connector.jdbc.clickhouse.table;
 import org.apache.flink.connector.jdbc.clickhouse.ClickHouseTestBase;
 import org.apache.flink.connector.jdbc.clickhouse.database.dialect.ClickHouseDialect;
 import org.apache.flink.connector.jdbc.core.table.sink.JdbcDynamicTableSinkITCase;
-import org.apache.flink.connector.jdbc.testutils.tables.TableBuilder;
-import org.apache.flink.connector.jdbc.testutils.tables.TableRow;
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.types.Row;
-
-import org.junit.jupiter.api.Disabled;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
 /** The Table Sink ITCase for {@link ClickHouseDialect}. */
-@Disabled("TODO: fix Sink Case")
 class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
         implements ClickHouseTestBase {
 
     @Override
-    protected TableRow createAppendOutputTable() {
-        return TableBuilder.tableRow(
+    protected ClickHouseTableRow createAppendOutputTable() {
+        return ClickHouseTableBuilder.clickHouseTableRow(
                 "dynamicSinkForAppend",
-                TableBuilder.pkField("id", DataTypes.INT().notNull()),
-                TableBuilder.field(
-                        "num", TableBuilder.dbType("Int64"), DataTypes.BIGINT().notNull()),
-                TableBuilder.field(
-                        "ts", TableBuilder.dbType("DateTime64(6)"), DataTypes.TIMESTAMP()));
+                ClickHouseTableBuilder.pkField("id", DataTypes.INT().notNull()),
+                ClickHouseTableBuilder.field(
+                        "num",
+                        ClickHouseTableBuilder.dbType("Int64"),
+                        DataTypes.BIGINT().notNull()),
+                ClickHouseTableBuilder.field(
+                        "ts",
+                        ClickHouseTableBuilder.dbType("DateTime64(6)"),
+                        DataTypes.TIMESTAMP()));
     }
 
     @Override
-    protected TableRow createBatchOutputTable() {
-        return TableBuilder.tableRow(
+    protected ClickHouseTableRow createBatchOutputTable() {
+        return ClickHouseTableBuilder.clickHouseTableRow(
                 "dynamicSinkForBatch",
-                TableBuilder.pkField("NAME", DataTypes.VARCHAR(20).notNull()),
-                TableBuilder.field(
-                        "SCORE", TableBuilder.dbType("Int64"), DataTypes.BIGINT().notNull()));
+                ClickHouseTableBuilder.pkField("NAME", DataTypes.VARCHAR(20).notNull()),
+                ClickHouseTableBuilder.field(
+                        "SCORE",
+                        ClickHouseTableBuilder.dbType("Int64"),
+                        DataTypes.BIGINT().notNull()));
     }
 
     @Override
-    protected TableRow createRealOutputTable() {
-        return TableBuilder.tableRow(
+    protected ClickHouseTableRow createRealOutputTable() {
+        return ClickHouseTableBuilder.clickHouseTableRow(
                 "REAL_TABLE",
-                TableBuilder.pkField(
-                        "real_data", TableBuilder.dbType("Float32"), DataTypes.FLOAT()));
+                ClickHouseTableBuilder.pkField(
+                        "real_data", ClickHouseTableBuilder.dbType("Float32"), DataTypes.FLOAT()));
     }
 
     @Override
