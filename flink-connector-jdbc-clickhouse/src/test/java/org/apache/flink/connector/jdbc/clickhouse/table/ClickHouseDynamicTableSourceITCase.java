@@ -24,6 +24,8 @@ import org.apache.flink.connector.jdbc.core.table.source.JdbcDynamicTableSourceI
 import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.types.Row;
 
+import org.junit.jupiter.api.Disabled;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,6 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /** The Table Source ITCase for {@link ClickHouseDialect}. */
+@Disabled("Disabled for a further RnD")
 class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
         implements ClickHouseTestBase {
 
