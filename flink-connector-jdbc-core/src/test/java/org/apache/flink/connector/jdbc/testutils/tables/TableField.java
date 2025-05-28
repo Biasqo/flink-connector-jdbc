@@ -28,7 +28,7 @@ public class TableField {
     private final DataType dataType;
     private final boolean pkField;
 
-    protected TableField(String name, DataType dataType, DbType dbType, boolean pkField) {
+    public TableField(String name, DataType dataType, DbType dbType, boolean pkField) {
         Preconditions.checkNotNull(name, "Column name can not be null.");
         Preconditions.checkNotNull(dataType, "Column data type can not be null.");
         this.name = name;

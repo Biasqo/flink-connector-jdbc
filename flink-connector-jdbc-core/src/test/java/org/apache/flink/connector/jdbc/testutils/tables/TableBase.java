@@ -69,7 +69,7 @@ public abstract class TableBase<T> implements TableManaged {
         return name;
     }
 
-    private Stream<TableField> getStreamFields() {
+    protected Stream<TableField> getStreamFields() {
         return Arrays.stream(this.fields);
     }
 

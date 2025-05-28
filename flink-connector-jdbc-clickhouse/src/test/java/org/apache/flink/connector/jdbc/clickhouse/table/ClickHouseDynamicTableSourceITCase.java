@@ -38,7 +38,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
 
     @Override
     protected TableRow createInputTable() {
-        return TableBuilder.tableRow(
+        return ClickHouseTableBuilder.ClickHouseTableRow(
                 "jdbDynamicTableSource",
                 TableBuilder.pkField(
                         "id", TableBuilder.dbType("Int64"), DataTypes.BIGINT().notNull()),
@@ -78,8 +78,8 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         LocalDateTime.parse("2020-01-01T15:35:00.123456"),
                         1.12345,
                         2.1234567879,
-                        1.175,
-                        1.79769,
+                        1.175E-10,
+                        1.79769E+40,
                         "a",
                         "abc",
                         "abcdef",
@@ -92,8 +92,8 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         LocalDateTime.parse("2020-01-01T15:36:01.123456"),
                         1.12345,
                         2.12345678790,
-                        1.175,
-                        1.79769,
+                        1.175E-10,
+                        1.79769E+40,
                         "a",
                         "abc",
                         "abcdef",
