@@ -23,6 +23,7 @@ import org.apache.flink.connector.jdbc.testutils.tables.TableRow;
 
 import java.util.stream.Collectors;
 
+/** ClikcHouseTableRow class */
 public class ClickHouseTableRow extends TableRow {
 
     @Override
