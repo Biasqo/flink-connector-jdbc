@@ -16,7 +16,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <clickhouse.version>0.6.2</clickhouse.version>
+        <clickhouse.jdbc.version>0.9.5</clickhouse.jdbc.version>
     </properties>
 
     <dependencies>
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>com.clickhouse</groupId>
             <artifactId>clickhouse-jdbc</artifactId>
-            <version>${clickhouse.version}</version>
+            <version>${clickhouse.jdbc.version}</version>
             <scope>provided</scope>
         </dependency>
 
