@@ -60,7 +60,7 @@ public class ClickHouseDialect extends AbstractDialect {
 
     @Override
     public Optional<String> defaultDriverName() {
-        return Optional.of("com.clickhouse.jdbc.Driver");
+        return Optional.of("com.clickhouse.jdbc.ClickHouseDriver");
     }
 
     @Override
