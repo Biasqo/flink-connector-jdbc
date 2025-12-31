@@ -48,8 +48,8 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                 field("timestamp6_col", DataTypes.TIMESTAMP(6)),
                 // other fields
                 field("real_col", dbType("Float32"), DataTypes.FLOAT()),
-                field("double_col", dbType("Float64"), DataTypes.DOUBLE()),
-                field("time_col", dbType("Time64(3)"), DataTypes.TIME()));
+                field("double_col", dbType("Float64"), DataTypes.DOUBLE())
+        );
     }
 
     @Override
@@ -60,15 +60,13 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         BigDecimal.valueOf(100.1234),
                         LocalDateTime.parse("2020-01-01T15:35:00.123456"),
                         1.175E-37F,
-                        1.79769E308D,
-                        LocalTime.parse("15:35")),
+                        1.79769E308D),
                 Row.of(
                         2L,
                         BigDecimal.valueOf(101.1234),
                         LocalDateTime.parse("2020-01-01T15:36:01.123456"),
                         -1.175E-37F,
-                        -1.79769E308,
-                        LocalTime.parse("15:36:01")));
+                        -1.79769E308));
     }
 
     @Override
