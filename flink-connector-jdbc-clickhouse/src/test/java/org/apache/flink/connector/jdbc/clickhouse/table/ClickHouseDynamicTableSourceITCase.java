@@ -20,6 +20,7 @@ package org.apache.flink.connector.jdbc.clickhouse.table;
 
 import org.apache.flink.connector.jdbc.clickhouse.ClickHouseTestBase;
 import org.apache.flink.connector.jdbc.clickhouse.database.dialect.ClickHouseDialect;
+import org.apache.flink.connector.jdbc.core.table.FilterHandlingPolicy;
 import org.apache.flink.connector.jdbc.core.table.source.JdbcDynamicTableSourceITCase;
 import org.apache.flink.connector.jdbc.testutils.tables.TableRow;
 import org.apache.flink.table.api.DataTypes;
@@ -69,5 +70,11 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         -1.175E-37F,
                         -1.79769E308,
                         LocalTime.parse("15:36:01")));
+    }
+
+    @Override
+    public String timestampFilterExpression() {
+        return "timestamp6_col > toDateTime64('2020-01-01 15:35:00', 6) " +
+                "AND timestamp6_col < toDateTime64('2020-01-01 15:35:01', 6)";
     }
 }

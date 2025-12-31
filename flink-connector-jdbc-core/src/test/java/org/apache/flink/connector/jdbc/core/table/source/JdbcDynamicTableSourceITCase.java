@@ -247,8 +247,8 @@ public abstract class JdbcDynamicTableSourceITCase implements DatabaseTest {
         assertThat(
                         executeQuery(
                                 "SELECT * FROM FAKE_TABLE "
-                                        + "WHERE timestamp6_col > TIMESTAMP '2020-01-01 15:35:00'"
-                                        + "  AND timestamp6_col < TIMESTAMP '2020-01-01 15:35:01'"))
+                                        + "WHERE "
+                                        + timestampFilterExpression()))
                 .containsExactly(onlyRow1);
 
         // test the IN operator
@@ -609,5 +609,10 @@ public abstract class JdbcDynamicTableSourceITCase implements DatabaseTest {
     private enum Caching {
         ENABLE_CACHE,
         DISABLE_CACHE
+    }
+
+    public String timestampFilterExpression() {
+        return "timestamp6_col > TIMESTAMP '2020-01-01 15:35:00' " +
+                "AND timestamp6_col < TIMESTAMP '2020-01-01 15:35:01'";
     }
 }
