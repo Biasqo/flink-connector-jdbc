@@ -49,7 +49,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                 // other fields
                 field("real_col", dbType("Float32"), DataTypes.FLOAT()),
                 field("double_col", dbType("Float64"), DataTypes.DOUBLE()),
-                field("time_col", dbType("Time64"), DataTypes.TIME()));
+                field("time_col", dbType("TIME"), DataTypes.TIME()));
     }
 
     @Override
