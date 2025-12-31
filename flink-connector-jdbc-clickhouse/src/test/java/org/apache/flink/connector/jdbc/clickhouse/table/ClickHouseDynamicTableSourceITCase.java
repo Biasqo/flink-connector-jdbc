@@ -27,7 +27,6 @@ import org.apache.flink.types.Row;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,8 +47,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                 field("timestamp6_col", DataTypes.TIMESTAMP(6)),
                 // other fields
                 field("real_col", dbType("Float32"), DataTypes.FLOAT()),
-                field("double_col", dbType("Float64"), DataTypes.DOUBLE())
-        );
+                field("double_col", dbType("Float64"), DataTypes.DOUBLE()));
     }
 
     @Override
