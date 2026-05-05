@@ -43,26 +43,26 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
     protected TableRow createInputTable() {
         return tableRow(
                 "jdbDynamicTableSource",
-                field("id", DataTypes.BIGINT().notNull()),
-                field("decimal_col", DataTypes.DECIMAL(10, 4)),
-                field("timestamp6_col", DataTypes.TIMESTAMP(6)),
-                field("int_col", DataTypes.INT()),
-                field("smallint_col", DataTypes.SMALLINT()),
-                field("tinyint_col", DataTypes.TINYINT()),
-                field("bigint_nullable_col", DataTypes.BIGINT()),
+                field("id", dbType("Int64"), DataTypes.BIGINT().notNull()),
+                field("decimal_col", dbType("Decimal(10, 4)"), DataTypes.DECIMAL(10, 4)),
+                field("timestamp6_col", dbType("DateTime64(6)"), DataTypes.TIMESTAMP(6)),
+                field("int_col", dbType("Int32"), DataTypes.INT()),
+                field("smallint_col", dbType("Int16"), DataTypes.SMALLINT()),
+                field("tinyint_col", dbType("Int8"), DataTypes.TINYINT()),
+                field("bigint_col", dbType("Int64"), DataTypes.BIGINT()),
                 field("real_col", dbType("Float32"), DataTypes.FLOAT()),
                 field("double_col", dbType("Float64"), DataTypes.DOUBLE()),
-                field("string_col", DataTypes.STRING()),
+                field("string_col", dbType("String"), DataTypes.STRING()),
                 field("fixed_string_col", dbType("FixedString(10)"), DataTypes.STRING()),
-                field("bool_col", DataTypes.BOOLEAN()),
-                field("date_col", DataTypes.DATE()),
-                field("timestamp_col", DataTypes.TIMESTAMP()),
+                field("bool_col", dbType("Bool"), DataTypes.BOOLEAN()),
+                field("date_col", dbType("Date"), DataTypes.DATE()),
+                field("timestamp_col", dbType("DateTime(0)"), DataTypes.TIMESTAMP()),
                 field("array_col", dbType("Array(Int32)"), DataTypes.ARRAY(DataTypes.INT())),
                 field(
                         "map_col",
                         dbType("Map(String, Int32)"),
                         DataTypes.MAP(DataTypes.STRING(), DataTypes.INT())),
-                field("nullable_string_col", DataTypes.STRING()));
+                field("nullable_string_col", dbType("Nullable(String)"), DataTypes.STRING()));
     }
 
     @Override
