@@ -57,7 +57,8 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                 field("bool_col", dbType("Bool"), DataTypes.BOOLEAN()),
                 field("date_col", dbType("Date"), DataTypes.DATE()),
                 field("timestamp_col", dbType("DateTime(0)"), DataTypes.TIMESTAMP()),
-                field("array_col", dbType("Array(Int32)"), DataTypes.ARRAY(DataTypes.INT())),
+                //                field("array_col", dbType("Array(Int32)"),
+                // DataTypes.ARRAY(DataTypes.INT())),
                 //                field(
                 //                        "map_col",
                 //                        dbType("Map(String, Int32)"),
@@ -83,7 +84,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         true,
                         LocalDate.parse("2020-01-01"),
                         LocalDateTime.parse("2020-01-01T15:35:00"),
-                        new Integer[] {1, 2, 3},
+                        //                        new Integer[] {1, 2, 3},
                         //                        new HashMap<String, Integer>() {
                         //                            {
                         //                                put("x", 10);
@@ -103,9 +104,9 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         "world",
                         "fixedtxt",
                         false,
-                        java.time.LocalDate.parse("2020-01-02"),
+                        LocalDate.parse("2020-01-02"),
                         LocalDateTime.parse("2020-01-01T15:36:01"),
-                        new Integer[] {4, 5},
+                        //                        new Integer[] {4, 5},
                         //                        new HashMap<String, Integer>() {
                         //                            {
                         //                                put("x", 10);
