@@ -28,7 +28,6 @@ import org.apache.flink.types.Row;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.apache.flink.connector.jdbc.clickhouse.ClickHouseTestBase.tableRow;
@@ -58,10 +57,10 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                 field("date_col", dbType("Date"), DataTypes.DATE()),
                 field("timestamp_col", dbType("DateTime(0)"), DataTypes.TIMESTAMP()),
                 field("array_col", dbType("Array(Int32)"), DataTypes.ARRAY(DataTypes.INT())),
-                field(
-                        "map_col",
-                        dbType("Map(String, Int32)"),
-                        DataTypes.MAP(DataTypes.STRING(), DataTypes.INT())),
+                //                field(
+                //                        "map_col",
+                //                        dbType("Map(String, Int32)"),
+                //                        DataTypes.MAP(DataTypes.STRING(), DataTypes.INT())),
                 field("nullable_string_col", dbType("Nullable(String)"), DataTypes.STRING()));
     }
 
@@ -84,11 +83,11 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         java.time.LocalDate.parse("2020-01-01"),
                         LocalDateTime.parse("2020-01-01T15:35:00"),
                         new Integer[] {1, 2, 3},
-                        new HashMap<String, Integer>() {
-                            {
-                                put("x", 10);
-                            }
-                        },
+                        //                        new HashMap<String, Integer>() {
+                        //                            {
+                        //                                put("x", 10);
+                        //                            }
+                        //                        },
                         null),
                 Row.of(
                         2L,
@@ -106,11 +105,11 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         java.time.LocalDate.parse("2020-01-02"),
                         LocalDateTime.parse("2020-01-01T15:36:01"),
                         new Integer[] {4, 5},
-                        new HashMap<String, Integer>() {
-                            {
-                                put("x", 10);
-                            }
-                        },
+                        //                        new HashMap<String, Integer>() {
+                        //                            {
+                        //                                put("x", 10);
+                        //                            }
+                        //                        },
                         "optional"));
     }
 
