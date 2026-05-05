@@ -28,6 +28,7 @@ import org.apache.flink.types.Row;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.apache.flink.connector.jdbc.clickhouse.ClickHouseTestBase.tableRow;
@@ -45,9 +46,23 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                 field("id", DataTypes.BIGINT().notNull()),
                 field("decimal_col", DataTypes.DECIMAL(10, 4)),
                 field("timestamp6_col", DataTypes.TIMESTAMP(6)),
-                // other fields
+                field("int_col", DataTypes.INT()),
+                field("smallint_col", DataTypes.SMALLINT()),
+                field("tinyint_col", DataTypes.TINYINT()),
+                field("bigint_nullable_col", DataTypes.BIGINT()),
                 field("real_col", dbType("Float32"), DataTypes.FLOAT()),
-                field("double_col", dbType("Float64"), DataTypes.DOUBLE()));
+                field("double_col", dbType("Float64"), DataTypes.DOUBLE()),
+                field("string_col", DataTypes.STRING()),
+                field("fixed_string_col", dbType("FixedString(10)"), DataTypes.STRING()),
+                field("bool_col", DataTypes.BOOLEAN()),
+                field("date_col", DataTypes.DATE()),
+                field("timestamp_col", DataTypes.TIMESTAMP()),
+                field("array_col", dbType("Array(Int32)"), DataTypes.ARRAY(DataTypes.INT())),
+                field(
+                        "map_col",
+                        dbType("Map(String, Int32)"),
+                        DataTypes.MAP(DataTypes.STRING(), DataTypes.INT())),
+                field("nullable_string_col", DataTypes.STRING()));
     }
 
     @Override
@@ -57,19 +72,51 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         1L,
                         BigDecimal.valueOf(100.1234),
                         LocalDateTime.parse("2020-01-01T15:35:00.123456"),
+                        42,
+                        (short) 7,
+                        (byte) 1,
+                        999L,
                         1.175E-37F,
-                        1.79769E308D),
+                        1.79769E308D,
+                        "hello",
+                        "fixedstr",
+                        true,
+                        java.time.LocalDate.parse("2020-01-01"),
+                        LocalDateTime.parse("2020-01-01T15:35:00"),
+                        new Integer[] {1, 2, 3},
+                        new HashMap<String, Integer>() {
+                            {
+                                put("x", 10);
+                            }
+                        },
+                        null),
                 Row.of(
                         2L,
                         BigDecimal.valueOf(101.1234),
                         LocalDateTime.parse("2020-01-01T15:36:01.123456"),
+                        -42,
+                        (short) -7,
+                        (byte) -1,
+                        null,
                         -1.175E-37F,
-                        -1.79769E308));
+                        -1.79769E308D,
+                        "world",
+                        "fixedtxt",
+                        false,
+                        java.time.LocalDate.parse("2020-01-02"),
+                        LocalDateTime.parse("2020-01-01T15:36:01"),
+                        new Integer[] {4, 5},
+                        new HashMap<String, Integer>() {
+                            {
+                                put("x", 10);
+                            }
+                        },
+                        "optional"));
     }
 
     @Override
     public String timestampFilterExpression() {
-        return "timestamp6_col > TO_TIMESTAMP_LTZ('2020-01-01 15:35:00') "
-                + "AND timestamp6_col < TO_TIMESTAMP_LTZ('2020-01-01 15:35:01')";
+        return "timestamp6_col > toDateTime64('2020-01-01 15:35:00', 6) "
+                + "AND timestamp6_col < toDateTime64('2020-01-01 15:35:01', 6)";
     }
 }
