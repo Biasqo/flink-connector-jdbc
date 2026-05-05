@@ -26,6 +26,7 @@ import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.types.Row;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -72,15 +73,15 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         BigDecimal.valueOf(100.1234),
                         LocalDateTime.parse("2020-01-01T15:35:00.123456"),
                         42,
-                        (short) 7,
-                        (byte) 1,
+                        7,
+                        1,
                         999L,
                         1.175E-37F,
                         1.79769E308D,
                         "hello",
                         "fixedstr",
                         true,
-                        java.time.LocalDate.parse("2020-01-01"),
+                        LocalDate.parse("2020-01-01"),
                         LocalDateTime.parse("2020-01-01T15:35:00"),
                         new Integer[] {1, 2, 3},
                         //                        new HashMap<String, Integer>() {
@@ -94,9 +95,9 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         BigDecimal.valueOf(101.1234),
                         LocalDateTime.parse("2020-01-01T15:36:01.123456"),
                         -42,
-                        (short) -7,
-                        (byte) -1,
-                        null,
+                        -7,
+                        -1,
+                        -999L,
                         -1.175E-37F,
                         -1.79769E308D,
                         "world",
