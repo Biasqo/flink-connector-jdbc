@@ -54,7 +54,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                 field("double_col", dbType("Float64"), DataTypes.DOUBLE()),
                 field("string_col", dbType("String"), DataTypes.STRING()),
                 field("fixed_string_col", dbType("FixedString(10)"), DataTypes.STRING()),
-                field("bool_col", dbType("Bool"), DataTypes.BOOLEAN()),
+                field("bool_col", dbType("Int8"), DataTypes.TINYINT()),
                 field("date_col", dbType("Date"), DataTypes.DATE()),
                 field("timestamp_col", dbType("DateTime(0)"), DataTypes.TIMESTAMP()),
                 //                field("array_col", dbType("Array(Int32)"),
