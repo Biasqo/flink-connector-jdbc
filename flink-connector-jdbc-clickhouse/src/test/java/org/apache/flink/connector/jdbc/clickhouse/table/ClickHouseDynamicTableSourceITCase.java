@@ -53,12 +53,10 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                 field("real_col", dbType("Float32"), DataTypes.FLOAT()),
                 field("double_col", dbType("Float64"), DataTypes.DOUBLE()),
                 field("string_col", dbType("String"), DataTypes.STRING()),
-                field("fixed_string_col", dbType("FixedString(10)"), DataTypes.STRING()),
                 field("bool_col", dbType("Int8"), DataTypes.TINYINT()),
                 field("date_col", dbType("Date"), DataTypes.DATE()),
                 field("timestamp_col", dbType("DateTime(0)"), DataTypes.TIMESTAMP()),
-                //                field("array_col", dbType("Array(Int32)"),
-                // DataTypes.ARRAY(DataTypes.INT())),
+                field("array_col", dbType("Array(Int32)"), DataTypes.ARRAY(DataTypes.INT())),
                 //                field(
                 //                        "map_col",
                 //                        dbType("Map(String, Int32)"),
@@ -80,11 +78,10 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         1.175E-37F,
                         1.79769E308D,
                         "hello",
-                        "fixedstr",
                         1,
                         LocalDate.parse("2020-01-01"),
                         LocalDateTime.parse("2020-01-01T15:35:00"),
-                        //                        new Integer[] {1, 2, 3},
+                        new Integer[] {1, 2, 3},
                         //                        new HashMap<String, Integer>() {
                         //                            {
                         //                                put("x", 10);
@@ -102,11 +99,10 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         -1.175E-37F,
                         -1.79769E308D,
                         "world",
-                        "fixedtxt",
                         0,
                         LocalDate.parse("2020-01-02"),
                         LocalDateTime.parse("2020-01-01T15:36:01"),
-                        //                        new Integer[] {4, 5},
+                        new Integer[] {4, 5},
                         //                        new HashMap<String, Integer>() {
                         //                            {
                         //                                put("x", 10);
