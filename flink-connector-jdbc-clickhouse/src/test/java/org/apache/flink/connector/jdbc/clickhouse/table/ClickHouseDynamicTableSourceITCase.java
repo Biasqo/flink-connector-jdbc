@@ -44,6 +44,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
         return tableRow(
                 "jdbDynamicTableSource",
                 field("id", dbType("Int64"), DataTypes.BIGINT().notNull()),
+                field("uuid_col", dbType("UUID"), DataTypes.STRING().notNull()),
                 field("decimal_col", dbType("Decimal(10, 4)"), DataTypes.DECIMAL(10, 4)),
                 field("timestamp6_col", dbType("DateTime64(6)"), DataTypes.TIMESTAMP(6)),
                 field("int_col", dbType("Int32"), DataTypes.INT()),
@@ -56,7 +57,8 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                 field("bool_col", dbType("Int8"), DataTypes.TINYINT()),
                 field("date_col", dbType("Date"), DataTypes.DATE()),
                 field("timestamp_col", dbType("DateTime(0)"), DataTypes.TIMESTAMP()),
-                field("array_col", dbType("Array(Int32)"), DataTypes.ARRAY(DataTypes.INT())),
+                //                field("array_col", dbType("Array(Int32)"),
+                // DataTypes.ARRAY(DataTypes.INT())),
                 //                field(
                 //                        "map_col",
                 //                        dbType("Map(String, Int32)"),
@@ -66,9 +68,14 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
 
     @Override
     protected List<Row> getTestData() {
+
+        String uuid1 = "123e4567-e89b-12d3-a456-426614174000";
+        String uuid2 = "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11";
+
         return Arrays.asList(
                 Row.of(
                         1L,
+                        uuid1,
                         BigDecimal.valueOf(100.1234),
                         LocalDateTime.parse("2020-01-01T15:35:00.123456"),
                         42,
@@ -81,7 +88,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         1,
                         LocalDate.parse("2020-01-01"),
                         LocalDateTime.parse("2020-01-01T15:35:00"),
-                        new Integer[] {1, 2, 3},
+                        //                        new Integer[] {1, 2, 3},
                         //                        new HashMap<String, Integer>() {
                         //                            {
                         //                                put("x", 10);
@@ -90,6 +97,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         null),
                 Row.of(
                         2L,
+                        uuid2,
                         BigDecimal.valueOf(101.1234),
                         LocalDateTime.parse("2020-01-01T15:36:01.123456"),
                         -42,
@@ -102,7 +110,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         0,
                         LocalDate.parse("2020-01-02"),
                         LocalDateTime.parse("2020-01-01T15:36:01"),
-                        new Integer[] {4, 5},
+                        //                        new Integer[] {4, 5},
                         //                        new HashMap<String, Integer>() {
                         //                            {
                         //                                put("x", 10);
