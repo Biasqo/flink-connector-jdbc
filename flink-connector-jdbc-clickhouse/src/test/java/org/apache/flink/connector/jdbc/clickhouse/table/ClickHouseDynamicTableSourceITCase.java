@@ -26,7 +26,6 @@ import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.types.Row;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
