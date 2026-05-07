@@ -81,8 +81,8 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         "hello",
                         LocalDate.parse("2020-01-01"),
                         LocalDateTime.parse("2020-01-01T15:35:00"),
+                        1,
                         new Integer[] {1, 2, 3},
-                        0,
                         new HashMap<String, Integer>() {
                             {
                                 put("x", 10);
