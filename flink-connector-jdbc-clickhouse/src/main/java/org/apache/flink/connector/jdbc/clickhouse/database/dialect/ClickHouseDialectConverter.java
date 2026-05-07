@@ -62,15 +62,19 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
                 return null;
             case BOOLEAN:
             case TINYINT:
-                return val -> ((Integer) val).byteValue();
+                return val -> val instanceof Number ? ((Number) val).byteValue() : val;
             case SMALLINT:
-                return val -> val instanceof Integer ? ((Integer) val).shortValue() : val;
+                return val -> val instanceof Number ? ((Number) val).shortValue() : val;
             case INTEGER:
             case INTERVAL_YEAR_MONTH:
+                return val -> val instanceof Number ? ((Number) val).intValue() : val;
             case BIGINT:
             case INTERVAL_DAY_TIME:
+                return val -> val instanceof Number ? ((Number) val).longValue() : val;
             case FLOAT:
+                return val -> val instanceof Number ? ((Number) val).floatValue() : val;
             case DOUBLE:
+                return val -> val instanceof Number ? ((Number) val).doubleValue() : val;
             case BINARY:
             case VARBINARY:
                 return val -> val;
@@ -78,15 +82,36 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
             case VARCHAR:
                 return val -> StringData.fromString((String) val);
             case DATE:
-                return val -> (int) (((Date) val).toLocalDate().toEpochDay());
+                return val ->
+                        val instanceof Date
+                                ? (int) (((Date) val).toLocalDate().toEpochDay())
+                                : val instanceof Timestamp
+                                        ? (int)
+                                                (((Timestamp) val)
+                                                        .toLocalDateTime()
+                                                        .toLocalDate()
+                                                        .toEpochDay())
+                                        : val;
             case TIME_WITHOUT_TIME_ZONE:
-                return val -> (int) (((Time) val).toLocalTime().toNanoOfDay() / 1_000_000L);
+                return val ->
+                        val instanceof Time
+                                ? (int) (((Time) val).toLocalTime().toNanoOfDay() / 1_000_000L)
+                                : val instanceof Timestamp
+                                        ? (int)
+                                                (((Timestamp) val)
+                                                                .toLocalDateTime()
+                                                                .toLocalTime()
+                                                                .toNanoOfDay()
+                                                        / 1_000_000L)
+                                        : val;
             case TIMESTAMP_WITH_TIME_ZONE:
             case TIMESTAMP_WITHOUT_TIME_ZONE:
                 return val ->
                         val instanceof LocalDateTime
                                 ? TimestampData.fromLocalDateTime((LocalDateTime) val)
-                                : TimestampData.fromTimestamp((Timestamp) val);
+                                : val instanceof Timestamp
+                                        ? TimestampData.fromTimestamp((Timestamp) val)
+                                        : val;
             case DECIMAL:
                 final int precision = ((DecimalType) type).getPrecision();
                 final int scale = ((DecimalType) type).getScale();
@@ -123,15 +148,19 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
         switch (type.getTypeRoot()) {
             case BOOLEAN:
             case TINYINT:
-                return ((Integer) value).byteValue();
+                return value instanceof Number ? ((Number) value).byteValue() : value;
             case SMALLINT:
-                return value instanceof Integer ? ((Integer) value).shortValue() : value;
+                return value instanceof Number ? ((Number) value).shortValue() : value;
             case INTEGER:
             case INTERVAL_YEAR_MONTH:
+                return value instanceof Number ? ((Number) value).intValue() : value;
             case BIGINT:
             case INTERVAL_DAY_TIME:
+                return value instanceof Number ? ((Number) value).longValue() : value;
             case FLOAT:
+                return value instanceof Number ? ((Number) value).floatValue() : value;
             case DOUBLE:
+                return value instanceof Number ? ((Number) value).doubleValue() : value;
             case BINARY:
             case VARBINARY:
                 return value;
@@ -146,7 +175,9 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
             case TIMESTAMP_WITHOUT_TIME_ZONE:
                 return value instanceof LocalDateTime
                         ? TimestampData.fromLocalDateTime((LocalDateTime) value)
-                        : TimestampData.fromTimestamp((Timestamp) value);
+                        : value instanceof Timestamp
+                                ? TimestampData.fromTimestamp((Timestamp) value)
+                                : value;
             case DECIMAL:
                 final int precision = ((DecimalType) type).getPrecision();
                 final int scale = ((DecimalType) type).getScale();
