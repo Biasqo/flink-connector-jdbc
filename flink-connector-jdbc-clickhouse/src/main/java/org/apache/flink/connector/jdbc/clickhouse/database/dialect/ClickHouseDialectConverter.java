@@ -36,7 +36,9 @@ import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,9 +78,9 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
             case VARCHAR:
                 return val -> StringData.fromString((String) val);
             case DATE:
-                return val -> (Date) val;
+                return val -> (int) (((Date) val).toLocalDate().toEpochDay());
             case TIME_WITHOUT_TIME_ZONE:
-                return val -> (Time) val;
+                return val -> (int) (((Time) val).toLocalTime().toNanoOfDay() / 1_000_000L);
             case TIMESTAMP_WITH_TIME_ZONE:
             case TIMESTAMP_WITHOUT_TIME_ZONE:
                 return val ->
@@ -137,9 +139,9 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
             case VARCHAR:
                 return value.toString();
             case DATE:
-                return (Date) value;
+                return Date.valueOf(LocalDate.ofEpochDay((int) value));
             case TIME_WITHOUT_TIME_ZONE:
-                return (Time) value;
+                return Time.valueOf(LocalTime.ofNanoOfDay((int) value * 1_000_000L));
             case TIMESTAMP_WITH_TIME_ZONE:
             case TIMESTAMP_WITHOUT_TIME_ZONE:
                 return value instanceof LocalDateTime
