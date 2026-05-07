@@ -23,6 +23,7 @@ import org.apache.flink.api.common.typeinfo.LocalTimeTypeInfo;
 import org.apache.flink.api.common.typeinfo.PrimitiveArrayTypeInfo;
 import org.apache.flink.api.common.typeinfo.SqlTimeTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.java.typeutils.MapTypeInfo;
 import org.apache.flink.api.java.typeutils.ObjectArrayTypeInfo;
 import org.apache.flink.table.types.logical.LogicalTypeRoot;
 
@@ -121,6 +122,8 @@ public class JdbcTypeUtil {
             return TYPE_MAPPING.get(type);
         } else if (type instanceof ObjectArrayTypeInfo || type instanceof PrimitiveArrayTypeInfo) {
             return Types.ARRAY;
+        } else if (type instanceof MapTypeInfo) {
+            return Types.JAVA_OBJECT;
         } else {
             throw new IllegalArgumentException("Unsupported type: " + type);
         }
