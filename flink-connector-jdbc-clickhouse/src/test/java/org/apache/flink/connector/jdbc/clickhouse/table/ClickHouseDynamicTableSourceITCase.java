@@ -51,11 +51,12 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                 field("smallint_col", dbType("Int16"), DataTypes.SMALLINT()),
                 field("tinyint_col", dbType("Int8"), DataTypes.TINYINT()),
                 field("bigint_col", dbType("Int64"), DataTypes.BIGINT()),
-                field("real_col", dbType("Float32"), DataTypes.FLOAT()),
+                field("float_col", dbType("Float32"), DataTypes.FLOAT()),
                 field("double_col", dbType("Float64"), DataTypes.DOUBLE()),
                 field("string_col", dbType("String"), DataTypes.STRING()),
                 field("date_col", dbType("Date"), DataTypes.DATE()),
                 field("timestamp_col", dbType("DateTime(0)"), DataTypes.TIMESTAMP()),
+                field("nullable_bool_col", dbType("Nullable(Int8)"), DataTypes.TINYINT()),
                 field("array_col", dbType("Array(Int32)"), DataTypes.ARRAY(DataTypes.INT())),
                 field(
                         "map_col",
@@ -72,7 +73,8 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         BigDecimal.valueOf(100.1234),
                         LocalDateTime.parse("2020-01-01T15:35:00.123456"),
                         42,
-                        (short) 7,
+                        11,
+                        1,
                         999L,
                         1.175E-37F,
                         1.79769E308D,
@@ -80,6 +82,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         LocalDate.parse("2020-01-01"),
                         LocalDateTime.parse("2020-01-01T15:35:00"),
                         new Integer[] {1, 2, 3},
+                        0,
                         new HashMap<String, Integer>() {
                             {
                                 put("x", 10);
@@ -91,13 +94,15 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         BigDecimal.valueOf(101.1234),
                         LocalDateTime.parse("2020-01-01T15:36:01.123456"),
                         -42,
-                        (short) -7,
+                        -7,
+                        -2,
                         -999L,
                         -1.175E-37F,
                         -1.79769E308D,
                         "world",
                         LocalDate.parse("2020-01-01"),
                         LocalDateTime.parse("2020-01-01T15:36:01"),
+                        null,
                         new Integer[] {4, 5},
                         new HashMap<String, Integer>() {
                             {
