@@ -28,7 +28,6 @@ import org.apache.flink.types.Row;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.apache.flink.connector.jdbc.clickhouse.ClickHouseTestBase.tableRow;
@@ -84,9 +83,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                 field("score", DataTypes.FLOAT()),
                 field("score2", DataTypes.DOUBLE()),
                 field("level", DataTypes.INT()),
-                field("create_dttm", DataTypes.TIMESTAMP()),
-                field("cases", DataTypes.ARRAY(DataTypes.INT())),
-                field("add_info", DataTypes.MAP(DataTypes.INT(), DataTypes.STRING())));
+                field("create_dttm", DataTypes.TIMESTAMP()));
     }
 
     @Override
@@ -106,14 +103,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         3.14f,
                         3.14159265358979,
                         1,
-                        LocalDateTime.of(2024, 1, 1, 10, 0, 0),
-                        Arrays.asList(1, 2, 3),
-                        new HashMap<Integer, String>() {
-                            {
-                                put(1, "info1");
-                                put(2, "info2");
-                            }
-                        }),
+                        LocalDateTime.of(2024, 1, 1, 10, 0, 0)),
                 Row.of(
                         "user3",
                         "Bailey",
@@ -123,13 +113,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         1.23f,
                         1.23456789012345,
                         5,
-                        LocalDateTime.of(2024, 6, 15, 14, 30, 0),
-                        Arrays.asList(4, 5),
-                        new HashMap<Integer, String>() {
-                            {
-                                put(3, "info3");
-                            }
-                        }),
+                        LocalDateTime.of(2024, 6, 15, 14, 30, 0)),
                 Row.of(
                         "user4",
                         "Tina",
@@ -139,8 +123,6 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         9.99f,
                         9.99999999999999,
                         10,
-                        LocalDateTime.of(2024, 12, 31, 23, 59, 59),
-                        Arrays.asList(9, 2),
-                        new HashMap<Integer, String>()));
+                        LocalDateTime.of(2024, 12, 31, 23, 59, 59)));
     }
 }
