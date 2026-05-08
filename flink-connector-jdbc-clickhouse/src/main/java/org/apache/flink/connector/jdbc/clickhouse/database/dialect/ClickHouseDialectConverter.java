@@ -87,12 +87,12 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
             case DATE:
                 return val ->
                         val instanceof Date
-                                ? (long) (((Date) val).toLocalDate().toEpochDay())
+                                ? (int) (((Date) val).toLocalDate().toEpochDay())
                                 : val;
             case TIME_WITHOUT_TIME_ZONE:
                 return val ->
                         val instanceof Time
-                                ? (long) (((Time) val).toLocalTime().toNanoOfDay() / 1_000_000L)
+                                ? (int) (((Time) val).toLocalTime().toNanoOfDay() / 1_000_000L)
                                 : val;
             case TIMESTAMP_WITH_TIME_ZONE:
             case TIMESTAMP_WITHOUT_TIME_ZONE:
