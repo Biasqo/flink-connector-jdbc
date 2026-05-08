@@ -35,6 +35,7 @@ import org.apache.flink.table.types.logical.RowType;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Array;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -42,7 +43,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -122,8 +122,7 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
                 final JdbcDeserializationConverter elementConverter =
                         createInternalConverter(elementType);
                 return val -> {
-                    Object[] raw =
-                            val instanceof Object[] ? (Object[]) val : ((List<?>) val).toArray();
+                    Object[] raw = (Object[]) ((Array) val).getArray();
                     Object[] converted = new Object[raw.length];
                     for (int i = 0; i < raw.length; i++) {
                         converted[i] = raw[i] == null ? null : elementConverter.deserialize(raw[i]);
