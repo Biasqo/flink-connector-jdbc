@@ -93,10 +93,4 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         null,
                         "optional"));
     }
-
-    @Override
-    public String timestampFilterExpression() {
-        return "timestamp6_col > toDateTime64('2020-01-01 15:35:00', 6) "
-                + "AND timestamp6_col < toDateTime64('2020-01-01 15:35:01', 6)";
-    }
 }
