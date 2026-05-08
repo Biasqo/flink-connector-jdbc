@@ -86,8 +86,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                 field("level", DataTypes.INT()),
                 field("create_dttm", DataTypes.TIMESTAMP()),
                 field("cases", DataTypes.ARRAY(DataTypes.INT())),
-                field("add_info", DataTypes.MAP(DataTypes.INT(), DataTypes.STRING()))
-        );
+                field("add_info", DataTypes.MAP(DataTypes.INT(), DataTypes.STRING())));
     }
 
     @Override
@@ -108,8 +107,13 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         3.14159265358979,
                         1,
                         LocalDateTime.of(2024, 1, 1, 10, 0, 0),
-                        new Integer[]{1, 2, 3},
-                        new HashMap<Integer, String>() {{ put(1, "info1"); put(2, "info2"); }}),
+                        new Integer[] {1, 2, 3},
+                        new HashMap<Integer, String>() {
+                            {
+                                put(1, "info1");
+                                put(2, "info2");
+                            }
+                        }),
                 Row.of(
                         "user3",
                         "Bailey",
@@ -120,8 +124,12 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         1.23456789012345,
                         5,
                         LocalDateTime.of(2024, 6, 15, 14, 30, 0),
-                        new Integer[]{4, 5},
-                        new HashMap<Integer, String>() {{ put(3, "info3"); }}),
+                        new Integer[] {4, 5},
+                        new HashMap<Integer, String>() {
+                            {
+                                put(3, "info3");
+                            }
+                        }),
                 Row.of(
                         "user4",
                         "Tina",
@@ -132,7 +140,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         9.99999999999999,
                         10,
                         LocalDateTime.of(2024, 12, 31, 23, 59, 59),
-                        new Integer[]{},
+                        new Integer[] {},
                         new HashMap<Integer, String>()));
     }
 }
