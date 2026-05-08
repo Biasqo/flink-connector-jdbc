@@ -22,6 +22,8 @@ import org.apache.flink.annotation.Internal;
 import org.apache.flink.connector.jdbc.core.database.dialect.AbstractDialectConverter;
 import org.apache.flink.table.data.ArrayData;
 import org.apache.flink.table.data.DecimalData;
+import org.apache.flink.table.data.GenericArrayData;
+import org.apache.flink.table.data.GenericMapData;
 import org.apache.flink.table.data.MapData;
 import org.apache.flink.table.data.StringData;
 import org.apache.flink.table.data.TimestampData;
@@ -40,6 +42,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -107,10 +110,44 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
                                 ? DecimalData.fromBigDecimal(
                                         new BigDecimal((BigInteger) val, 0), precision, scale)
                                 : DecimalData.fromBigDecimal((BigDecimal) val, precision, scale);
-            case MAP:
-                return val -> (MapData) val;
             case ARRAY:
-                return val -> (ArrayData) val;
+                final LogicalType elementType =
+                        ((ArrayType) type)
+                                .getChildren().stream()
+                                        .findFirst()
+                                        .orElseThrow(
+                                                () ->
+                                                        new RuntimeException(
+                                                                "Unknown array element type"));
+                final JdbcDeserializationConverter elementConverter =
+                        createInternalConverter(elementType);
+                return val -> {
+                    Object[] raw =
+                            val instanceof Object[] ? (Object[]) val : ((List<?>) val).toArray();
+                    Object[] converted = new Object[raw.length];
+                    for (int i = 0; i < raw.length; i++) {
+                        converted[i] = raw[i] == null ? null : elementConverter.deserialize(raw[i]);
+                    }
+                    return new GenericArrayData(converted);
+                };
+            case MAP:
+                final LogicalType keyType = ((MapType) type).getKeyType();
+                final LogicalType valueType = ((MapType) type).getValueType();
+                final JdbcDeserializationConverter keyConverter = createInternalConverter(keyType);
+                final JdbcDeserializationConverter valueConverter =
+                        createInternalConverter(valueType);
+                return val -> {
+                    Map<?, ?> rawMap = (Map<?, ?>) val;
+                    Map<Object, Object> result = new HashMap<>(rawMap.size());
+                    for (Map.Entry<?, ?> entry : rawMap.entrySet()) {
+                        Object k = entry.getKey();
+                        Object v = entry.getValue();
+                        result.put(
+                                k == null ? null : keyConverter.deserialize(k),
+                                v == null ? null : valueConverter.deserialize(v));
+                    }
+                    return new GenericMapData(result);
+                };
             default:
                 return super.createInternalConverter(type);
         }
