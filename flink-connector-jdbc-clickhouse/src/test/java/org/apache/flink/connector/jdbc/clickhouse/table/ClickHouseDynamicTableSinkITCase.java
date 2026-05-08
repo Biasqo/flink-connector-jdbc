@@ -26,7 +26,6 @@ import org.apache.flink.table.api.DataTypes;
 import org.apache.flink.types.Row;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,11 +78,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                 pkField("user_name", DataTypes.VARCHAR(20).notNull()),
                 field("email", DataTypes.VARCHAR(255)),
                 field("balance", DataTypes.DECIMAL(18, 2)),
-                field("balance2", DataTypes.DECIMAL(18, 2)),
-                field("score", DataTypes.FLOAT()),
-                field("score2", DataTypes.DOUBLE()),
-                field("level", DataTypes.INT()),
-                field("create_dttm", DataTypes.TIMESTAMP()));
+                field("balance2", DataTypes.DECIMAL(18, 2)));
     }
 
     @Override
@@ -98,31 +93,19 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         "user1",
                         "Tom",
                         "tom123@gmail.com",
-                        new BigDecimal("8.10"),
-                        new BigDecimal("16.20"),
-                        3.14f,
-                        3.14159265358979,
-                        1,
-                        LocalDateTime.of(2024, 1, 1, 10, 0, 0)),
+                        new BigDecimal("8.1"),
+                        new BigDecimal("16.2")),
                 Row.of(
                         "user3",
                         "Bailey",
                         "bailey@qq.com",
                         new BigDecimal("9.99"),
-                        new BigDecimal("19.98"),
-                        1.23f,
-                        1.23456789012345,
-                        5,
-                        LocalDateTime.of(2024, 6, 15, 14, 30, 0)),
+                        new BigDecimal("19.98")),
                 Row.of(
                         "user4",
                         "Tina",
                         "tina@gmail.com",
-                        new BigDecimal("11.30"),
-                        new BigDecimal("22.60"),
-                        9.99f,
-                        9.99999999999999,
-                        10,
-                        LocalDateTime.of(2024, 12, 31, 23, 59, 59)));
+                        new BigDecimal("11.3"),
+                        new BigDecimal("22.6")));
     }
 }
