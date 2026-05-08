@@ -64,6 +64,7 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
             case NULL:
                 return null;
             case BOOLEAN:
+                return val -> val;
             case TINYINT:
                 return val -> val instanceof Number ? ((Number) val).byteValue() : val;
             case SMALLINT:
@@ -80,7 +81,9 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
                 return val -> val instanceof Number ? ((Number) val).doubleValue() : val;
             case BINARY:
             case VARBINARY:
-                return val -> val;
+                throw new UnsupportedOperationException(
+                        "BINARY/VARBINARY types are not supported by ClickHouse dialect. "
+                                + "Use STRING instead.");
             case CHAR:
             case VARCHAR:
                 return val -> StringData.fromString((String) val);
@@ -168,6 +171,7 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
     public static Object toExternalSerializer(Object value, LogicalType type) {
         switch (type.getTypeRoot()) {
             case BOOLEAN:
+                return value;
             case TINYINT:
                 return value instanceof Number ? ((Number) value).byteValue() : value;
             case SMALLINT:
@@ -184,7 +188,9 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
                 return value instanceof Number ? ((Number) value).doubleValue() : value;
             case BINARY:
             case VARBINARY:
-                return value;
+                throw new UnsupportedOperationException(
+                        "BINARY/VARBINARY types are not supported by ClickHouse dialect. "
+                                + "Use STRING instead.");
             case CHAR:
             case VARCHAR:
                 return value.toString();
