@@ -56,7 +56,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                 field("date_col", dbType("Date"), DataTypes.DATE()),
                 field("timestamp_col", dbType("DateTime(0)"), DataTypes.TIMESTAMP()),
                 field("nullable_bool_col", dbType("Nullable(Int8)"), DataTypes.TINYINT()),
-                field("array_col", dbType("Array(Int32)"), DataTypes.ARRAY(DataTypes.INT())));
+                field("nullable_string_col", dbType("Nullable(String)"), DataTypes.STRING()));
     }
 
     @Override
