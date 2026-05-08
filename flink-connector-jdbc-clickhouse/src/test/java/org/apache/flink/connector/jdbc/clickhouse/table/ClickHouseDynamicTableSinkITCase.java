@@ -107,7 +107,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         3.14159265358979,
                         1,
                         LocalDateTime.of(2024, 1, 1, 10, 0, 0),
-                        new Integer[] {1, 2, 3},
+                        Arrays.asList(1, 2, 3),
                         new HashMap<Integer, String>() {
                             {
                                 put(1, "info1");
@@ -124,7 +124,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         1.23456789012345,
                         5,
                         LocalDateTime.of(2024, 6, 15, 14, 30, 0),
-                        new Integer[] {4, 5},
+                        Arrays.asList(4, 5),
                         new HashMap<Integer, String>() {
                             {
                                 put(3, "info3");
@@ -140,7 +140,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         9.99999999999999,
                         10,
                         LocalDateTime.of(2024, 12, 31, 23, 59, 59),
-                        new Integer[] {},
+                        Arrays.asList(9, 2),
                         new HashMap<Integer, String>()));
     }
 }

@@ -82,7 +82,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         LocalDate.parse("2020-01-01"),
                         LocalDateTime.parse("2020-01-01T15:35:00"),
                         1,
-                        new Integer[] {1, 2, 3},
+                        Arrays.asList(1, 2, 3),
                         new HashMap<String, Integer>() {
                             {
                                 put("x", 10);
@@ -103,7 +103,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
                         LocalDate.parse("2020-01-01"),
                         LocalDateTime.parse("2020-01-01T15:36:01"),
                         null,
-                        new Integer[] {4, 5},
+                        Arrays.asList(4, 5),
                         new HashMap<String, Integer>() {
                             {
                                 put("x", 10);
