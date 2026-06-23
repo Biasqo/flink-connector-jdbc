@@ -45,17 +45,18 @@ See how to link with it for cluster execution [here]({{< ref "docs/dev/configura
 
 A driver dependency is also required to connect to a specified database. Here are drivers currently supported:
 
-| Driver     | Group Id                   | Artifact Id            | JAR                                                                                                                               |
-|:-----------|:---------------------------|:-----------------------|:----------------------------------------------------------------------------------------------------------------------------------|
-| MySQL      | `mysql`                    | `mysql-connector-java` | [Download](https://repo.maven.apache.org/maven2/mysql/mysql-connector-java/)                                                      |
-| Oracle     | `com.oracle.database.jdbc` | `ojdbc8`               | [Download](https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8)                                                    |
-| PostgreSQL | `org.postgresql`           | `postgresql`           | [Download](https://jdbc.postgresql.org/download/)                                                                                 |
-| Derby      | `org.apache.derby`         | `derby`                | [Download](http://db.apache.org/derby/derby_downloads.html)                                                                       |
-| SQL Server | `com.microsoft.sqlserver`  | `mssql-jdbc`           | [Download](https://docs.microsoft.com/en-us/sql/connect/jdbc/download-microsoft-jdbc-driver-for-sql-server?view=sql-server-ver16) |
-| CrateDB    | `io.crate`                 | `crate-jdbc`           | [Download](https://repo1.maven.org/maven2/io/crate/crate-jdbc/)                                                                   |
-| Db2        | `com.ibm.db2.jcc`          | `db2jcc`               | [Download](https://www.ibm.com/support/pages/download-db2-fix-packs-version-db2-linux-unix-and-windows)                           | 
-| Trino      | `io.trino`                 | `trino-jdbc`           | [Download](https://repo1.maven.org/maven2/io/trino/trino-jdbc/)                                                                   |
-| OceanBase  | `com.oceanbase`            | `oceanbase-client`     | [Download](https://repo1.maven.org/maven2/com/oceanbase/oceanbase-client/)                                                        |
+| Driver     | Group Id                      | Artifact Id            | JAR                                                                                                                               |
+|:-----------|:------------------------------|:-----------------------|:----------------------------------------------------------------------------------------------------------------------------------|
+| MySQL      | `mysql`                       | `mysql-connector-java` | [Download](https://repo.maven.apache.org/maven2/mysql/mysql-connector-java/)                                                      |
+| Oracle     | `com.oracle.database.jdbc`    | `ojdbc8`               | [Download](https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8)                                                    |
+| PostgreSQL | `org.postgresql`              | `postgresql`           | [Download](https://jdbc.postgresql.org/download/)                                                                                 |
+| Derby      | `org.apache.derby`            | `derby`                | [Download](http://db.apache.org/derby/derby_downloads.html)                                                                       |
+| SQL Server | `com.microsoft.sqlserver`     | `mssql-jdbc`           | [Download](https://docs.microsoft.com/en-us/sql/connect/jdbc/download-microsoft-jdbc-driver-for-sql-server?view=sql-server-ver16) |
+| CrateDB    | `io.crate`                    | `crate-jdbc`           | [Download](https://repo1.maven.org/maven2/io/crate/crate-jdbc/)                                                                   |
+| Db2        | `com.ibm.db2.jcc`             | `db2jcc`               | [Download](https://www.ibm.com/support/pages/download-db2-fix-packs-version-db2-linux-unix-and-windows)                           | 
+| Trino      | `io.trino`                    | `trino-jdbc`           | [Download](https://repo1.maven.org/maven2/io/trino/trino-jdbc/)                                                                   |
+| OceanBase  | `com.oceanbase`               | `oceanbase-client`     | [Download](https://repo1.maven.org/maven2/com/oceanbase/oceanbase-client/)                                                        |
+| ClickHouse | `com.clickhouse.jdbc.Driver`  | `clickhouse-jdbc`      | [Download](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)                                                     |                                                                                                                  |
 
 
 JDBC connector and drivers are not part of Flink's binary distribution. See how to link with them for cluster execution [here]({{< ref "docs/dev/configuration/overview" >}}).
@@ -66,7 +67,7 @@ How to create a JDBC table
 
 The JDBC table can be defined as following:
 
-```sql
+``    `sql
 -- register a MySQL table 'users' in Flink SQL
 CREATE TABLE MyUserTable (
   id BIGINT,
@@ -711,6 +712,7 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
         <th class="text-left"><a href="https://docs.oracle.com/database/121/SQLRF/sql_elements001.htm#SQLRF30020">Oracle type</a></th>
         <th class="text-left"><a href="https://www.postgresql.org/docs/12/datatype.html">PostgreSQL type</a></th>
         <th class="text-left"><a href="https://crate.io/docs/crate/reference/en/master/general/ddl/data-types.html">CrateDB type</a></th>
+        <th class="text-left"><a href="https://clickhouse.com/docs/en/sql-reference/data-types">ClickHouse type</a></th>
         <th class="text-left"><a href="https://docs.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact-sql?view=sql-server-ver16">SQL Server type</a></th>
         <th class="text-left"><a href="https://www.ibm.com/docs/en/db2-for-zos/12?topic=columns-data-types">Db2</a></th>
         <th class="text-left"><a href="https://trino.io/docs/current/language/types.html">Trino type</a></th>
@@ -725,6 +727,7 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
       <td></td>
       <td></td>
       <td></td>
+      <td><code>Int8</code></td>
       <td><code>TINYINT</code></td>
       <td></td>
       <td><code>TINYINT</code></td>
@@ -745,6 +748,7 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
       <td>
         <code>SMALLINT</code>
         <code>SHORT</code></td>
+      <td><code>Int16</code></td>
       <td><code>SMALLINT</code></td>
       <td><code>SMALLINT</code></td>
       <td><code>SMALLINT</code></td>
@@ -766,6 +770,7 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
       <td>
         <code>INTEGER</code><br>
         <code>INT</code></td>
+      <td><code>Int32</code></td>
       <td><code>INT</code></td>
       <td><code>INTEGER</code></td>
       <td><code>INTEGER</code></td>
@@ -787,6 +792,7 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
       <td>
         <code>BIGINT</code><br>
         <code>LONG</code></td>
+      <td><code>Int64</code></td>
       <td><code>BIGINT</code></td>
       <td></td>
       <td><code>BIGINT</code></td>
@@ -801,6 +807,7 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
       <td></td>
       <td></td>
       <td></td>
+      <td><code>UInt64</code></td>
       <td></td> 
       <td></td>
       <td></td>
@@ -818,6 +825,7 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
       <td>
         <code>REAL</code><br>
         <code>FLOAT</code></td>
+      <td><code>Float32</code></td>
       <td><code>REAL</code></td>
       <td><code>REAL</code></td>
       <td><code>FLOAT</code></td>
@@ -837,6 +845,7 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
       <td>
         <code>DOUBLE</code><br>
         <code>DOUBLE PRECISION</code></td>
+      <td><code>Float64</code></td>
       <td><code>FLOAT</code></td>
       <td><code>DOUBLE</code></td>
       <td><code>DOUBLE</code></td>
@@ -858,6 +867,7 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
         <code>NUMERIC(p, s)</code><br>
         <code>DECIMAL(p, s)</code></td>
       <td><code>NUMERIC(p, s)</code></td>
+      <td><code>Decimal(p, s)</code></td>
       <td><code>DECIMAL(p, s)</code></td>
       <td>
         <code>NUMERIC(p, s)</code>
@@ -879,6 +889,7 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
       <td></td>
       <td><code>BOOLEAN</code></td>
       <td><code>BOOLEAN</code></td>
+      <td><code>Bool</code></td>
       <td><code>BIT</code></td>
       <td><code>BOOLEAN</code></td>
       <td></td>
@@ -893,6 +904,10 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
       <td><code>DATE</code></td>
       <td><code>DATE</code></td>
       <td><code>DATE</code> (only in expressions - not stored type)</td>
+      <td>
+        <code>Date</code>
+        <code>Date32</code>
+      </td>
       <td><code>DATE</code></td>
       <td><code>DATE</code></td>
       <td><code>DATE</code></td>
@@ -905,6 +920,7 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
       <td><code>DATE</code></td>
       <td><code>TIME [(p)] [WITHOUT TIMEZONE]</code></td>
       <td><code>TIME</code> (only in expressions - not stored type)</td>
+      <td></td>
       <td><code>TIME(0)</code></td>
       <td><code>TIME</code></td>
       <td><code>TIME_WITHOUT_TIME_ZONE</code></td>
@@ -917,6 +933,10 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
       <td><code>TIMESTAMP [(p)] [WITHOUT TIMEZONE]</code></td>
       <td><code>TIMESTAMP [(p)] [WITHOUT TIMEZONE]</code></td>
       <td><code>TIMESTAMP [(p)] [WITHOUT TIMEZONE]</code></td>
+      <td>
+        <code>DateTime</code>
+        <code>DateTime64(p)</code>
+      </td>
       <td>
         <code>DATETIME</code>
         <code>DATETIME2</code>
@@ -949,6 +969,10 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
         <code>CHARACTER VARYING(n)</code><br>
         <code>TEXT</code>
         <code>STRING</code></td>
+      <td>
+        <code>String</code>
+        <code>FixedString(n)</code>
+      </td>
       <td>
         <code>CHAR(n)</code><br>
         <code>NCHAR(n)</code><br>
@@ -985,6 +1009,7 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
         <code>BLOB</code></td>
       <td><code>BYTEA</code></td>
       <td></td> 
+      <td></td> 
       <td>
         <code>BINARY(n)</code><br>
         <code>VARBINARY(n)</code><br>
@@ -1005,12 +1030,26 @@ Flink supports connect to several databases which uses dialect like MySQL, Oracl
       <td></td>
       <td><code>ARRAY</code></td>
       <td><code>ARRAY</code></td> 
+      <td><code>Array(?)</code></td>
       <td></td>
       <td></td>
       <td><code>ARRAY</code></td>
       <td></td>
       <td></td>
       <td><code>ARRAY</code></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td> 
+      <td><code>Map(?, ?)</code></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><code>MAP<?,?></code></td>
     </tr>
     </tbody>
 </table>
