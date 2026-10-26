@@ -38,8 +38,11 @@ import java.util.stream.Collectors;
 
 /** ClickHouseTableRow. */
 public class ClickHouseTableRow extends TableRow {
-    public ClickHouseTableRow(String name, TableField[] fields) {
+    private final String engine;
+
+    public ClickHouseTableRow(String name, String engine, TableField[] fields) {
         super(name, fields);
+        this.engine = engine;
     }
 
     @Override
@@ -53,7 +56,7 @@ public class ClickHouseTableRow extends TableRow {
                 "CREATE TABLE %s (%s) %s PRIMARY KEY (%s);",
                 getTableName(),
                 getStreamFields().map(TableField::asString).collect(Collectors.joining(", ")),
-                "ENGINE = MergeTree",
+                engine,
                 pkFields);
     }
 

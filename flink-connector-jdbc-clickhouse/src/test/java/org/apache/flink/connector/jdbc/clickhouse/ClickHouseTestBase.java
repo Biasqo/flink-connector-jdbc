@@ -36,7 +36,7 @@ public interface ClickHouseTestBase extends DatabaseTest {
         return ClickHouseDatabase.getMetadata();
     }
 
-    static TableRow tableRow(String name, TableField... fields) {
-        return new ClickHouseTableRow(name, fields);
+    static TableRow tableRow(String name, String engine, TableField... fields) {
+        return new ClickHouseTableRow(name, engine, fields);
     }
 }
