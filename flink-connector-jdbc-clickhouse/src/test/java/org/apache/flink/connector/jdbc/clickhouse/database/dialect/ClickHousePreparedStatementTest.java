@@ -109,10 +109,7 @@ class ClickHousePreparedStatementTest {
     @Test
     void testUpsertStatement() {
         Optional<String> upsertStmt = dialect.getUpsertStatement(tableName, fieldNames, keyFields);
-        assertThat(upsertStmt)
-                .isEqualTo(
-                        Optional.of(
-                                "INSERT INTO `tbl`(`id`, `name`, `email`, `ts`, `field1`, `field_2`, `__field_3__`) VALUES (:id, :name, :email, :ts, :field1, :field_2, :__field_3__)"));
+        assertThat(upsertStmt).isEqualTo(Optional.empty());
     }
 
     @Test
