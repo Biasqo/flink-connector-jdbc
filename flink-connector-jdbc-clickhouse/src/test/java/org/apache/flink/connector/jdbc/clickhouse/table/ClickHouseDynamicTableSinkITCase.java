@@ -48,7 +48,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
             tableRow(
                     "MAP_ARRAY_TABLE",
                     "MergeTree()",
-                    pkField("id", dbType("Int32"), DataTypes.INT().notNull()),
+                    field("id", dbType("Int32"), DataTypes.INT()),
                     field(
                             "map_col",
                             dbType("Map(Int, String)"),
@@ -83,7 +83,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
     protected TableRow createBatchOutputTable() {
         return tableRow(
                 "dynamicSinkForBatch",
-                "ReplacingMergeTree()",
+                "MergeTree()",
                 field("NAME", dbType("String"), DataTypes.VARCHAR(20).notNull()),
                 field("SCORE", dbType("Int64"), DataTypes.BIGINT().notNull()));
     }
@@ -92,7 +92,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
     protected TableRow createRealOutputTable() {
         return tableRow(
                 "REAL_TABLE",
-                "ReplacingMergeTree()",
+                "MergeTree()",
                 field("real_data", dbType("Float32"), DataTypes.FLOAT()));
     }
 
@@ -112,7 +112,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
     protected TableRow createCheckpointOutputTable() {
         return tableRow(
                 "checkpointTable",
-                "ReplacingMergeTree()",
+                "MergeTree()",
                 field("id", dbType("Int64"), DataTypes.BIGINT().notNull()));
     }
 
