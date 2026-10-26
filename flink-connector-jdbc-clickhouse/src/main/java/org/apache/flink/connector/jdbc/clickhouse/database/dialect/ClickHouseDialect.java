@@ -95,9 +95,9 @@ public class ClickHouseDialect extends AbstractDialect {
                 Arrays.stream(conditionFields)
                         .map(f -> format("%s = :%s", quoteIdentifier(f), f))
                         .collect(Collectors.joining(" AND "));
-        return "UPDATE "
+        return "ALTER TABLE "
                 + quoteIdentifier(tableName)
-                + " SET "
+                + " UPDATE "
                 + setClause
                 + " WHERE "
                 + conditionClause;

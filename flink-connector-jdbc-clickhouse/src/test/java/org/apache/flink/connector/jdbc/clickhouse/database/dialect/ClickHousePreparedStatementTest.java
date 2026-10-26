@@ -90,11 +90,11 @@ class ClickHousePreparedStatementTest {
         String updateStmt = dialect.getUpdateStatement(tableName, fieldNames, keyFields);
         assertThat(updateStmt)
                 .isEqualTo(
-                        "UPDATE `tbl` SET `name` = :name, `email` = :email, `ts` = :ts, "
+                        "ALTER TABLE `tbl` UPDATE `name` = :name, `email` = :email, `ts` = :ts, "
                                 + "`field1` = :field1, `field_2` = :field_2 "
                                 + "WHERE `id` = :id AND `__field_3__` = :__field_3__");
         NamedStatementMatcher.parsedSql(
-                        "UPDATE `tbl` SET `name` = ?, `email` = ?, `ts` = ?, `field1` = ?, "
+                        "ALTER TABLE `tbl` UPDATE `name` = ?, `email` = ?, `ts` = ?, `field1` = ?, "
                                 + "`field_2` = ? WHERE `id` = ? AND `__field_3__` = ?")
                 .parameter("name", singletonList(1))
                 .parameter("email", singletonList(2))
