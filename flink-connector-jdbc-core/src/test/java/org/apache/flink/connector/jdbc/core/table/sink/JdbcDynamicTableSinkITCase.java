@@ -36,6 +36,8 @@ import org.apache.flink.runtime.operators.testutils.MockEnvironmentBuilder;
 import org.apache.flink.runtime.state.StateSnapshotContextSynchronousImpl;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.sink.SinkContextUtil;
+import org.apache.flink.streaming.api.lineage.LineageVertex;
+import org.apache.flink.streaming.api.lineage.LineageVertexProvider;
 import org.apache.flink.streaming.api.operators.AbstractStreamOperator;
 import org.apache.flink.streaming.api.operators.StreamingRuntimeContext;
 import org.apache.flink.streaming.runtime.tasks.ProcessingTimeService;
@@ -204,14 +206,14 @@ public abstract class JdbcDynamicTableSinkITCase extends AbstractTestBase implem
                 .collect(Collectors.toMap(r -> r.getFieldAs(0), Function.identity()));
     }
 
-    private void createTestDataTempView(StreamTableEnvironment tEnv, String viewName) {
+    protected void createTestDataTempView(StreamTableEnvironment tEnv, String viewName) {
         Table table = tEnv.fromValues(testData()).as("id", "num", "text", "ts");
 
         tEnv.createTemporaryView(viewName, table);
     }
 
     @Test
-    void testReal() throws Exception {
+    protected void testReal() throws Exception {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.getConfig().enableObjectReuse();
         StreamTableEnvironment tEnv =
@@ -282,12 +284,13 @@ public abstract class JdbcDynamicTableSinkITCase extends AbstractTestBase implem
         Set<Integer> searchIds = new HashSet<>(Arrays.asList(2, 10, 20));
         tEnv.executeSql(
                         String.format(
-                                "INSERT INTO %s SELECT id, num, ts FROM %s WHERE id IN (%s)",
+                                "INSERT INTO %s SELECT id, num, ts FROM %s WHERE id IN (%s)%s",
                                 tableName,
                                 viewName,
                                 searchIds.stream()
                                         .map(Object::toString)
-                                        .collect(Collectors.joining(","))))
+                                        .collect(Collectors.joining(",")),
+                                appendOnConflictClause()))
                 .await();
 
         List<Row> tableRows = appendOutputTable.selectAllTable(getMetadata());
@@ -303,7 +306,7 @@ public abstract class JdbcDynamicTableSinkITCase extends AbstractTestBase implem
     }
 
     @Test
-    void testBatchSink() throws Exception {
+    protected void testBatchSink() throws Exception {
         TableEnvironment tEnv = TableEnvironment.create(EnvironmentSettings.inBatchMode());
 
         String tableName = "batchSink";
@@ -376,8 +379,17 @@ public abstract class JdbcDynamicTableSinkITCase extends AbstractTestBase implem
                 .containsExactlyInAnyOrderElementsOf(testUserData());
     }
 
+    /**
+     * Clause appended to the INSERT statement of {@link #testAppend()}. Dialects whose append
+     * output table has a primary key must return an ON CONFLICT clause when {@link
+     * #isFlip558Enabled()}.
+     */
+    protected String appendOnConflictClause() {
+        return "";
+    }
+
     /** Whether the Flink version under test has the FLIP-558 ON CONFLICT validation (>= 2.3). */
-    private static boolean isFlip558Enabled() {
+    protected static boolean isFlip558Enabled() {
         return FlinkVersion.current().toString().compareTo("2.3") >= 0;
     }
 
@@ -542,6 +554,29 @@ public abstract class JdbcDynamicTableSinkITCase extends AbstractTestBase implem
                 .containsExactlyInAnyOrder(Row.of(1L), Row.of(2L));
 
         sinkFunction.close();
+    }
+
+    /**
+     * {@code TableLineageUtils} asks the object the provider returns for lineage at plan time,
+     * before {@code open()}. The dataset must already carry the physical table name then.
+     */
+    @Test
+    void testLineageDatasetNameIsKnownAtPlanTime() {
+        // checkpointOutputTable has no primary key, userOutputTable has one
+        for (TableRow table : Arrays.asList(checkpointOutputTable, userOutputTable)) {
+            Map<String, String> options = getOptions();
+            options.put("table-name", table.getTableName());
+            DynamicTableSink tableSink = createTableSink(table.getTableResolvedSchema(), options);
+            SinkFunctionProvider sinkProvider =
+                    (SinkFunctionProvider)
+                            tableSink.getSinkRuntimeProvider(new SinkRuntimeProviderContext(false));
+
+            LineageVertex lineageVertex =
+                    ((LineageVertexProvider) sinkProvider.createSinkFunction()).getLineageVertex();
+
+            assertThat(lineageVertex.datasets()).hasSize(1);
+            assertThat(lineageVertex.datasets().get(0).name()).isEqualTo(table.getTableName());
+        }
     }
 
     /** The help class to assure the test cases run compatibility. */
