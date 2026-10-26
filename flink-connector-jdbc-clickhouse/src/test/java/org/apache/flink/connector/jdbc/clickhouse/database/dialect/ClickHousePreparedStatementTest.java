@@ -48,10 +48,10 @@ class ClickHousePreparedStatementTest {
         String insertStmt = dialect.getInsertIntoStatement(tableName, fieldNames);
         assertThat(insertStmt)
                 .isEqualTo(
-                        "INSERT INTO tbl(id, name, email, ts, field1, field_2, __field_3__) "
+                        "INSERT INTO `tbl`(`id`, `name`, `email`, `ts`, `field1`, `field_2`, `__field_3__`) "
                                 + "VALUES (:id, :name, :email, :ts, :field1, :field_2, :__field_3__)");
         NamedStatementMatcher.parsedSql(
-                        "INSERT INTO tbl(id, name, email, ts, field1, field_2, __field_3__) "
+                        "INSERT INTO `tbl`(`id`, `name`, `email`, `ts`, `field1`, `field_2`, `__field_3__`) "
                                 + "VALUES (?, ?, ?, ?, ?, ?, ?)")
                 .parameter("id", singletonList(1))
                 .parameter("name", singletonList(2))
@@ -67,8 +67,8 @@ class ClickHousePreparedStatementTest {
     void testDeleteStatement() {
         String deleteStmt = dialect.getDeleteStatement(tableName, keyFields);
         assertThat(deleteStmt)
-                .isEqualTo("DELETE FROM tbl WHERE id = :id AND __field_3__ = :__field_3__");
-        NamedStatementMatcher.parsedSql("DELETE FROM tbl WHERE id = ? AND __field_3__ = ?")
+                .isEqualTo("DELETE FROM `tbl` WHERE `id` = :id AND `__field_3__` = :__field_3__");
+        NamedStatementMatcher.parsedSql("DELETE FROM `tbl` WHERE `id` = ? AND `__field_3__` = ?")
                 .parameter("id", singletonList(1))
                 .parameter("__field_3__", singletonList(2))
                 .matches(deleteStmt);
@@ -78,8 +78,8 @@ class ClickHousePreparedStatementTest {
     void testRowExistsStatement() {
         String rowExistStmt = dialect.getRowExistsStatement(tableName, keyFields);
         assertThat(rowExistStmt)
-                .isEqualTo("SELECT 1 FROM tbl WHERE id = :id AND __field_3__ = :__field_3__");
-        NamedStatementMatcher.parsedSql("SELECT 1 FROM tbl WHERE id = ? AND __field_3__ = ?")
+                .isEqualTo("SELECT 1 FROM `tbl` WHERE `id` = :id AND `__field_3__` = :__field_3__");
+        NamedStatementMatcher.parsedSql("SELECT 1 FROM `tbl` WHERE `id` = ? AND `__field_3__` = ?")
                 .parameter("id", singletonList(1))
                 .parameter("__field_3__", singletonList(2))
                 .matches(rowExistStmt);
@@ -90,12 +90,12 @@ class ClickHousePreparedStatementTest {
         String updateStmt = dialect.getUpdateStatement(tableName, fieldNames, keyFields);
         assertThat(updateStmt)
                 .isEqualTo(
-                        "ALTER TABLE tbl UPDATE name = :name, email = :email, ts = :ts, "
-                                + "field1 = :field1, field_2 = :field_2 "
-                                + "WHERE id = :id AND __field_3__ = :__field_3__");
+                        "UPDATE `tbl` SET `name` = :name, `email` = :email, `ts` = :ts, "
+                                + "`field1` = :field1, `field_2` = :field_2 "
+                                + "WHERE `id` = :id AND `__field_3__` = :__field_3__");
         NamedStatementMatcher.parsedSql(
-                        "ALTER TABLE tbl UPDATE name = ?, email = ?, ts = ?, field1 = ?, "
-                                + "field_2 = ? WHERE id = ? AND __field_3__ = ?")
+                        "UPDATE `tbl` SET `name` = ?, `email` = ?, `ts` = ?, `field1` = ?, "
+                                + "`field_2` = ? WHERE `id` = ? AND `__field_3__` = ?")
                 .parameter("name", singletonList(1))
                 .parameter("email", singletonList(2))
                 .parameter("ts", singletonList(3))
@@ -117,11 +117,11 @@ class ClickHousePreparedStatementTest {
         String selectStmt = dialect.getSelectFromStatement(tableName, fieldNames, keyFields);
         assertThat(selectStmt)
                 .isEqualTo(
-                        "SELECT id, name, email, ts, field1, field_2, __field_3__ FROM tbl "
-                                + "WHERE id = :id AND __field_3__ = :__field_3__");
+                        "SELECT `id`, `name`, `email`, `ts`, `field1`, `field_2`, `__field_3__` FROM `tbl` "
+                                + "WHERE `id` = :id AND `__field_3__` = :__field_3__");
         NamedStatementMatcher.parsedSql(
-                        "SELECT id, name, email, ts, field1, field_2, __field_3__ FROM tbl "
-                                + "WHERE id = ? AND __field_3__ = ?")
+                        "SELECT `id`, `name`, `email`, `ts`, `field1`, `field_2`, `__field_3__` FROM `tbl` "
+                                + "WHERE `id` = ? AND `__field_3__` = ?")
                 .parameter("id", singletonList(1))
                 .parameter("__field_3__", singletonList(2))
                 .matches(selectStmt);
