@@ -78,9 +78,12 @@ public class ClickHouseTableRow extends TableRow {
 
     @Override
     public String getSelectAllQuery() {
+        String finalKeyword = engine.startsWith("Replacing") ? " FINAL" : "";
         return String.format(
-                "SELECT %s FROM %s FINAL;",
-                getStreamFieldNames().collect(Collectors.joining(", ")), getTableName());
+                "SELECT %s FROM %s%s;",
+                getStreamFieldNames().collect(Collectors.joining(", ")),
+                getTableName(),
+                finalKeyword);
     }
 
     @Override

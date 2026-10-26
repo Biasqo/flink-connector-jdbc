@@ -183,13 +183,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         sourceTable, dataId));
 
         String sinkTable = "map_array_sink";
-        tEnv.executeSql(
-                complexOutputTable.getCreateQueryForFlink(
-                        getMetadata(),
-                        sinkTable,
-                        Arrays.asList(
-                                "'sink.buffer-flush.max-rows' = '2'",
-                                "'sink.buffer-flush.interval' = '0'")));
+        tEnv.executeSql(complexOutputTable.getCreateQueryForFlink(getMetadata(), sinkTable));
 
         tEnv.executeSql(String.format("INSERT INTO %s SELECT * FROM %s", sinkTable, sourceTable))
                 .await();
