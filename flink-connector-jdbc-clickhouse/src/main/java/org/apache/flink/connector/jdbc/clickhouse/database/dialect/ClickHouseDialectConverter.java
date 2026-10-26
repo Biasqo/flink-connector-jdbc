@@ -87,13 +87,14 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
         } else if (root == LogicalTypeRoot.TIMESTAMP_WITH_TIME_ZONE
                 || root == LogicalTypeRoot.TIMESTAMP_WITHOUT_TIME_ZONE) {
             final int precision = ((TimestampType) type).getPrecision();
-            final DateTimeFormatter formatter =
-                    DateTimeFormatter.ofPattern(timestampPattern(precision))
-                            .withZone(ZoneOffset.UTC);
-            return (val, index, statement) ->
-                    statement.setString(
-                            index,
-                            formatter.format(val.getTimestamp(index, precision).toInstant()));
+            final String pattern = timestampPattern(precision);
+
+            return (val, index, statement) -> {
+                DateTimeFormatter formatter =
+                        DateTimeFormatter.ofPattern(pattern).withZone(ZoneOffset.UTC);
+                statement.setString(
+                        index, formatter.format(val.getTimestamp(index, precision).toInstant()));
+            };
         } else {
             return super.createExternalConverter(type);
         }
