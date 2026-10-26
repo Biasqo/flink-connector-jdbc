@@ -74,7 +74,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
         return tableRow(
                 "dynamicSinkForAppend",
                 "MergeTree()",
-                pkField("id", dbType("Int32"), DataTypes.INT().notNull()),
+                field("id", dbType("Int32"), DataTypes.INT().notNull()),
                 field("num", dbType("Int64"), DataTypes.BIGINT().notNull()),
                 field("ts", dbType("DateTime64(6)"), DataTypes.TIMESTAMP()));
     }
