@@ -27,7 +27,6 @@ import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.planner.factories.TestValuesTableFactory;
 import org.apache.flink.types.Row;
-import org.apache.flink.types.RowKind;
 
 import org.junit.jupiter.api.Test;
 
@@ -74,7 +73,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
     protected TableRow createAppendOutputTable() {
         return tableRow(
                 "dynamicSinkForAppend",
-                "MergeTree()",
+                "ReplacingMergeTree()",
                 pkField("id", dbType("Int32"), DataTypes.INT().notNull()),
                 field("num", dbType("Int64"), DataTypes.BIGINT().notNull()),
                 field("ts", dbType("DateTime64(6)"), DataTypes.TIMESTAMP()));
@@ -84,7 +83,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
     protected TableRow createBatchOutputTable() {
         return tableRow(
                 "dynamicSinkForBatch",
-                "MergeTree()",
+                "ReplacingMergeTree()",
                 field("NAME", dbType("String"), DataTypes.VARCHAR(20).notNull()),
                 field("SCORE", dbType("Int64"), DataTypes.BIGINT().notNull()));
     }
@@ -93,7 +92,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
     protected TableRow createRealOutputTable() {
         return tableRow(
                 "REAL_TABLE",
-                "MergeTree()",
+                "ReplacingMergeTree()",
                 field("real_data", dbType("Float32"), DataTypes.FLOAT()));
     }
 
@@ -101,7 +100,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
     protected TableRow createUserOutputTable() {
         return tableRow(
                 "USER_TABLE",
-                "MergeTree()",
+                "ReplacingMergeTree()",
                 pkField("user_id", dbType("String"), DataTypes.VARCHAR(20).notNull()),
                 pkField("user_name", dbType("String"), DataTypes.VARCHAR(20).notNull()),
                 field("email", dbType("String"), DataTypes.VARCHAR(255)),
@@ -113,7 +112,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
     protected TableRow createCheckpointOutputTable() {
         return tableRow(
                 "checkpointTable",
-                "MergeTree()",
+                "ReplacingMergeTree()",
                 field("id", dbType("Int64"), DataTypes.BIGINT().notNull()));
     }
 
@@ -141,8 +140,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
 
     private static List<Row> insertRows() {
         return Arrays.asList(
-                Row.ofKind(
-                        RowKind.INSERT,
+                Row.of(
                         1,
                         new HashMap<Integer, String>() {
                             {
@@ -151,8 +149,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                             }
                         },
                         new String[] {"a", "b"}),
-                Row.ofKind(
-                        RowKind.INSERT,
+                Row.of(
                         2,
                         new HashMap<Integer, String>() {
                             {
@@ -160,7 +157,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                             }
                         },
                         new String[] {"c"}),
-                Row.ofKind(RowKind.INSERT, 3, new HashMap<Integer, String>(), new String[] {}));
+                Row.of(3, new HashMap<Integer, String>(), new String[] {}));
     }
 
     @Test
@@ -183,7 +180,13 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         sourceTable, dataId));
 
         String sinkTable = "map_array_sink";
-        tEnv.executeSql(complexOutputTable.getCreateQueryForFlink(getMetadata(), sinkTable));
+        tEnv.executeSql(
+                complexOutputTable.getCreateQueryForFlink(
+                        getMetadata(),
+                        sinkTable,
+                        Arrays.asList(
+                                "'sink.buffer-flush.max-rows' = '3'",
+                                "'sink.buffer-flush.interval' = '0'")));
 
         tEnv.executeSql(String.format("INSERT INTO %s SELECT * FROM %s", sinkTable, sourceTable))
                 .await();
