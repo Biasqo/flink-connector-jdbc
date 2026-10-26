@@ -46,7 +46,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
 
     private final TableRow complexOutputTable =
             tableRow(
-                    "MAP_ARRAY_TABLE",
+                    "map_array_table",
                     "MergeTree()",
                     field("id", dbType("Int32"), DataTypes.INT()),
                     field(
@@ -164,6 +164,9 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
     void testMapAndArrayRoundTrip() throws Exception {
         TableEnvironment tEnv = TableEnvironment.create(EnvironmentSettings.newInstance().build());
         String dataId = TestValuesTableFactory.registerData(insertRows());
+        try (java.sql.Connection conn = getMetadata().getConnection()) {
+            complexOutputTable.createTable(conn);
+        }
 
         String sourceTable = "map_array_source";
         tEnv.executeSql(
