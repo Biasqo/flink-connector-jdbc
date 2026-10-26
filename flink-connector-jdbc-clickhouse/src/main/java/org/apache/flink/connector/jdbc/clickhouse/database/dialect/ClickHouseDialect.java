@@ -79,7 +79,7 @@ public class ClickHouseDialect extends AbstractDialect {
     @Override
     public Optional<String> getUpsertStatement(
             String tableName, String[] fieldNames, String[] uniqueKeyFields) {
-        return Optional.empty();
+        return Optional.of(getInsertIntoStatement(tableName, fieldNames));
     }
 
     // ClickHouse pkField cannot be updated via sql
@@ -95,9 +95,9 @@ public class ClickHouseDialect extends AbstractDialect {
                 Arrays.stream(conditionFields)
                         .map(f -> format("%s = :%s", quoteIdentifier(f), f))
                         .collect(Collectors.joining(" AND "));
-        return "UPDATE "
+        return "ALTER TABLE "
                 + quoteIdentifier(tableName)
-                + " SET "
+                + " UPDATE "
                 + setClause
                 + " WHERE "
                 + conditionClause;
