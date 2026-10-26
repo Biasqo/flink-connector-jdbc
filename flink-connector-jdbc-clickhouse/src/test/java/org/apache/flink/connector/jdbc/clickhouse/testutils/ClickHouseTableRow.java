@@ -56,7 +56,7 @@ public class ClickHouseTableRow extends TableRow {
                 "CREATE TABLE %s (%s) %s PRIMARY KEY (%s);",
                 getTableName(),
                 getStreamFields().map(TableField::asString).collect(Collectors.joining(", ")),
-                engine,
+                "ENGINE = " + engine,
                 pkFields);
     }
 
@@ -79,7 +79,7 @@ public class ClickHouseTableRow extends TableRow {
     @Override
     public String getSelectAllQuery() {
         return String.format(
-                "SELECT %s FROM %s;",
+                "SELECT %s FROM %s FINAL;",
                 getStreamFieldNames().collect(Collectors.joining(", ")), getTableName());
     }
 
