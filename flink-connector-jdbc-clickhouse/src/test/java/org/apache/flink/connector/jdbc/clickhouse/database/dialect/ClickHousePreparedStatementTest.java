@@ -109,7 +109,7 @@ class ClickHousePreparedStatementTest {
     @Test
     void testUpsertStatement() {
         Optional<String> upsertStmt = dialect.getUpsertStatement(tableName, fieldNames, keyFields);
-        assertThat(upsertStmt).isEqualTo(Optional.empty());
+        assertThat(upsertStmt).isPresent().contains(dialect.getInsertIntoStatement(tableName, fieldNames));
     }
 
     @Test
