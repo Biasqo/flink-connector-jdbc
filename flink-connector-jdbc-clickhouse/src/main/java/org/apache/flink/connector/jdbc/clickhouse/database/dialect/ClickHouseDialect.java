@@ -79,7 +79,7 @@ public class ClickHouseDialect extends AbstractDialect {
     @Override
     public Optional<String> getUpsertStatement(
             String tableName, String[] fieldNames, String[] uniqueKeyFields) {
-        return Optional.of(getInsertIntoStatement(tableName, fieldNames));
+        return Optional.empty();
     }
 
     // ClickHouse pkField cannot be updated via sql

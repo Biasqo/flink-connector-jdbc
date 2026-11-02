@@ -304,8 +304,6 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
             stmt.execute(String.format("OPTIMIZE TABLE %s FINAL", sinkTable));
         }
 
-        System.out.println(expectedRowsAfterUpdate());
-        System.out.println(updateOutputTable.selectAllTable(getMetadata()));
         assertThat(updateOutputTable.selectAllTable(getMetadata()))
                 .containsExactlyInAnyOrderElementsOf(expectedRowsAfterUpdate());
     }
