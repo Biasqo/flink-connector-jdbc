@@ -39,10 +39,12 @@ import java.util.stream.Collectors;
 /** ClickHouseTableRow. */
 public class ClickHouseTableRow extends TableRow {
     private final String engine;
+    private final String keyClause;
 
-    public ClickHouseTableRow(String name, String engine, TableField[] fields) {
+    public ClickHouseTableRow(String name, String engine, String keyClause, TableField[] fields) {
         super(name, fields);
         this.engine = engine;
+        this.keyClause = keyClause;
     }
 
     @Override
@@ -53,10 +55,11 @@ public class ClickHouseTableRow extends TableRow {
                         .map(TableField::getName)
                         .collect(Collectors.joining(", "));
         return String.format(
-                "CREATE TABLE %s (%s) %s PRIMARY KEY (%s);",
+                "CREATE TABLE %s (%s) %s %s (%s);",
                 getTableName(),
                 getStreamFields().map(TableField::asString).collect(Collectors.joining(", ")),
                 "ENGINE = " + engine,
+                keyClause,
                 pkFields);
     }
 

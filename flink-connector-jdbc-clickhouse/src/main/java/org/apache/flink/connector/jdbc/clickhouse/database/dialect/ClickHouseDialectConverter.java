@@ -35,6 +35,7 @@ import org.apache.flink.table.types.logical.TimestampType;
 import org.apache.flink.table.types.logical.utils.LogicalTypeUtils;
 
 import java.lang.reflect.Array;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -84,8 +85,7 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
         } else if (root == LogicalTypeRoot.MAP) {
             return (val, index, statement) ->
                     statement.setObject(index, toExternalSerializer(val.getMap(index), type));
-        } else if (root == LogicalTypeRoot.TIMESTAMP_WITH_TIME_ZONE
-                || root == LogicalTypeRoot.TIMESTAMP_WITHOUT_TIME_ZONE) {
+        } else if (root == LogicalTypeRoot.TIMESTAMP_WITHOUT_TIME_ZONE) {
             final int precision = ((TimestampType) type).getPrecision();
             final String pattern = timestampPattern(precision);
 
@@ -129,7 +129,6 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
                 return Date.valueOf(LocalDate.ofEpochDay((int) value));
             case TIME_WITHOUT_TIME_ZONE:
                 return Time.valueOf(LocalTime.ofNanoOfDay((int) value * 1_000_000L));
-            case TIMESTAMP_WITH_TIME_ZONE:
             case TIMESTAMP_WITHOUT_TIME_ZONE:
                 return ((TimestampData) value).toTimestamp();
             case DECIMAL:
@@ -208,15 +207,39 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
     private JdbcDeserializationConverter createPrimitiveConverter(LogicalType type) {
         switch (type.getTypeRoot()) {
             case TINYINT:
-                return val -> val instanceof Number ? ((Number) val).byteValue() : val;
+                return val ->
+                        val instanceof Number
+                                ? (byte)
+                                        checkRange(
+                                                ((Number) val).longValue(),
+                                                Byte.MIN_VALUE,
+                                                Byte.MAX_VALUE,
+                                                "TINYINT")
+                                : val;
             case SMALLINT:
-                return val -> val instanceof Number ? ((Number) val).shortValue() : val;
+                return val ->
+                        val instanceof Number
+                                ? (short)
+                                        checkRange(
+                                                ((Number) val).longValue(),
+                                                Short.MIN_VALUE,
+                                                Short.MAX_VALUE,
+                                                "SMALLINT")
+                                : val;
             case INTEGER:
             case INTERVAL_YEAR_MONTH:
-                return val -> val instanceof Number ? ((Number) val).intValue() : val;
+                return val ->
+                        val instanceof Number
+                                ? (int)
+                                        checkRange(
+                                                ((Number) val).longValue(),
+                                                Integer.MIN_VALUE,
+                                                Integer.MAX_VALUE,
+                                                "INTEGER")
+                                : val;
             case BIGINT:
             case INTERVAL_DAY_TIME:
-                return val -> val instanceof Number ? ((Number) val).longValue() : val;
+                return val -> val instanceof Number ? checkLongRange((Number) val) : val;
             case FLOAT:
                 return val -> val instanceof Number ? ((Number) val).floatValue() : val;
             case DOUBLE:
@@ -235,7 +258,6 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
                                 : val instanceof LocalTime
                                         ? (int) (((LocalTime) val).toNanoOfDay() / 1_000_000L)
                                         : val;
-            case TIMESTAMP_WITH_TIME_ZONE:
             case TIMESTAMP_WITHOUT_TIME_ZONE:
                 return val ->
                         val instanceof Timestamp
@@ -252,6 +274,25 @@ public class ClickHouseDialectConverter extends AbstractDialectConverter {
         return precision <= 0
                 ? "yyyy-MM-dd HH:mm:ss"
                 : "yyyy-MM-dd HH:mm:ss." + "S".repeat(precision);
+    }
+
+    private long checkRange(long value, long min, long max, String type) {
+        if (value < min || value > max) {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "Value %d is out of range for %s [%d, %d]", value, type, min, max));
+        }
+        return value;
+    }
+
+    private long checkLongRange(Number n) {
+        if (n instanceof BigInteger && ((BigInteger) n).bitLength() > 63) {
+            throw new IllegalArgumentException(
+                    String.format(
+                            "Value %s is out of range for %s [%d, %d]",
+                            n, "BIGINT", Long.MIN_VALUE, Long.MAX_VALUE));
+        }
+        return n.longValue();
     }
 
     @Override

@@ -52,18 +52,21 @@ under the License.
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons-io.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.httpcomponents.core5</groupId>
             <artifactId>httpcore5</artifactId>
             <version>${httpcore5.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.apache.httpcomponents.core5</groupId>
             <artifactId>httpcore5-h2</artifactId>
             <version>${httpcore5-h2.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -129,5 +132,17 @@ under the License.
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>-Duser.timezone=UTC</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

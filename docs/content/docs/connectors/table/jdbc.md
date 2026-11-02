@@ -950,7 +950,7 @@ Flink supports the connection to several databases using dialect like MySQL, Ora
       <td><code>TIME [(p)]</code></td>
       <td><code>DATE</code></td>
       <td></td>
-      <td><code>Time</code> / <code>Time64(p)</code></td>
+      <td><code>Time</code> / <code>Time64(p)</code> (only when setting enable_time_time64_type = 1 is enabled)</td>
       <td><code>TIME [(p)] [WITHOUT TIMEZONE]</code></td>
     </tr>
     <tr>
@@ -984,7 +984,7 @@ Flink supports the connection to several databases using dialect like MySQL, Ora
       <td><code>TIMESTAMP [(p)]</code></td>
       <td><code>TIMESTAMP [(p)] [WITH TIMEZONE]</code></td>
       <td><code>TIMESTAMP</code></td>
-      <td><code>DateTime('TZ')</code> / <code>DateTime64(p, 'TZ')</code></td>
+      <td></td>
       <td><code>TIMESTAMP [(p)] [WITH TIMEZONE]</code></td>
     </tr>
     <tr>

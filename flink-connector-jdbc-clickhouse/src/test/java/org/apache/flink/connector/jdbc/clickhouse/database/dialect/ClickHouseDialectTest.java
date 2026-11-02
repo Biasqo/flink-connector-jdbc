@@ -45,6 +45,7 @@ class ClickHouseDialectTest extends JdbcDialectTest implements ClickHouseTestBas
                 createTestItem("TIMESTAMP"),
                 createTestItem("TIMESTAMP WITHOUT TIME ZONE"),
                 createTestItem("ARRAY<STRING>"),
+                createTestItem("MAP<STRING, STRING>"),
 
                 // Not valid data
                 createTestItem("BINARY", "The ClickHouse dialect doesn't support type: BINARY(1)."),

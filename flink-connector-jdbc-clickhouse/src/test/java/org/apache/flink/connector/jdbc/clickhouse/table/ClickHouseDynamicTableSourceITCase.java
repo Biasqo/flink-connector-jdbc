@@ -45,6 +45,7 @@ class ClickHouseDynamicTableSourceITCase extends JdbcDynamicTableSourceITCase
         return tableRow(
                 "jdbDynamicTableSource",
                 "MergeTree()",
+                "PRIMARY KEY",
                 field("id", dbType("Int64"), DataTypes.BIGINT().notNull()),
                 field("decimal_col", dbType("Decimal(10, 4)"), DataTypes.DECIMAL(10, 4)),
                 field("timestamp6_col", dbType("DateTime64(6)"), DataTypes.TIMESTAMP(6)),
