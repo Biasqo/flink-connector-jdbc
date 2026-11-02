@@ -455,7 +455,7 @@ As there is no standard syntax for upsert, the following table describes the dat
         </tr>
         <tr>
             <td>ClickHouse</td>
-            <td>INSERT INTO .. (..) VALUES (..) <i>Table engine should be from ReplacingMergeTree() family</i></td>
+            <td>SELECT per key, then INSERT or ALTER TABLE .. UPDATE (mutation). <i>Table engine should be from ReplacingMergeTree() family</i></td>
         </tr>
     </tbody>
 </table>

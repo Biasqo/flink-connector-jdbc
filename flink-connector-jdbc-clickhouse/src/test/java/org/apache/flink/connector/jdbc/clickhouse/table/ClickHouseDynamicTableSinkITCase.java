@@ -27,6 +27,7 @@ import org.apache.flink.table.api.EnvironmentSettings;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.planner.factories.TestValuesTableFactory;
 import org.apache.flink.types.Row;
+
 import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
