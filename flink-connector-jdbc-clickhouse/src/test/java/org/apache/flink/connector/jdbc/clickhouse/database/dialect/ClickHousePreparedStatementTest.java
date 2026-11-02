@@ -27,7 +27,6 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -108,10 +107,7 @@ class ClickHousePreparedStatementTest {
 
     @Test
     void testUpsertStatement() {
-        Optional<String> upsertStmt = dialect.getUpsertStatement(tableName, fieldNames, keyFields);
-        assertThat(upsertStmt)
-                .isPresent()
-                .contains(dialect.getInsertIntoStatement(tableName, fieldNames));
+        assertThat(dialect.getUpsertStatement(tableName, fieldNames, keyFields)).isEmpty();
     }
 
     @Test
