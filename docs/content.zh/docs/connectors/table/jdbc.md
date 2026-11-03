@@ -467,6 +467,10 @@ lookup cache 的主要目的是用于提高时态表关联 JDBC 连接器的性�
             <td>INSERT OR UPDATE INTO .. (..) VALUES (..)</td>
         </tr>
         <tr>
+            <td>ClickHouse</td>
+            <td>先按 key 查询 SELECT，然后 INSERT 或 ALTER TABLE .. UPDATE（mutation）。<i>表引擎应来自 ReplacingMergeTree() 系列</i></td>
+        </tr>
+        <tr>
             <td>CrateDB</td>
             <td>INSERT .. ON CONFLICT .. DO UPDATE SET ..</td>
         </tr>
