@@ -321,7 +321,7 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
         tEnv.executeSql(
                 String.format(
                         "CREATE TABLE %s ( "
-                                + "  id INT, "
+                                + "  id INT PRIMARY KEY NOT ENFORCED, "
                                 + "  ts1 TIMESTAMP(3), "
                                 + "  ts2 TIMESTAMP(3) "
                                 + ") WITH ( "
