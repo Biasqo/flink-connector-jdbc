@@ -277,13 +277,14 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
         tEnv.executeSql(
                 String.format(
                         "CREATE TABLE %s ( "
-                                + "  id INT, "
+                                + "  id INT PRIMARY KEY NOT ENFORCED, "
                                 + "  val STRING, "
-                                + "  num FLOAT "
+                                + "  num FLOAT, "
+                                + "  PRIMARY KEY (id) NOT ENFORCED "
                                 + ") WITH ( "
                                 + " 'connector' = 'values', "
                                 + " 'data-id' = '%s', "
-                                + " 'changelog-mode' = 'I' "
+                                + " 'changelog-mode' = 'I,UA,UB,D' "
                                 + ");",
                         sourceTable, dataId));
 
@@ -323,7 +324,8 @@ class ClickHouseDynamicTableSinkITCase extends JdbcDynamicTableSinkITCase
                         "CREATE TABLE %s ( "
                                 + "  id INT, "
                                 + "  ts1 TIMESTAMP(3), "
-                                + "  ts2 TIMESTAMP(3) "
+                                + "  ts2 TIMESTAMP(3), "
+                                + "  PRIMARY KEY (id) NOT ENFORCED "
                                 + ") WITH ( "
                                 + " 'connector' = 'values', "
                                 + " 'data-id' = '%s', "
